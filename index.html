@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bug Free?</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --text: #c9d1d9;
+            --sub: #8b949e;
+            --accent: #238636;
+            --border: #30363d;
+            --hover: #21262d;
+            --wrong: rgba(248, 81, 73, 0.15);
+            --correct: rgba(46, 160, 67, 0.15);
+            --correct-text: #3fb950;
+            --wrong-text: #f85149;
+        }
+
+        [data-theme="light"] {
+            --bg: #f6f8fa;
+            --card: #ffffff;
+            --text: #24292f;
+            --sub: #57606a;
+            --accent: #0969da;
+            --border: #d0d7de;
+            --hover: #f3f4f6;
+            --wrong: #ffebe9;
+            --correct: #dafbe1;
+            --correct-text: #1a7f37;
+            --wrong-text: #cf222e;
+        }
+
+        body {
+            font-family: -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: 0.3s;
+        }
+
+        .external-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .theme-toggle {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .container {
+            background: var(--card);
+            width: 90%;
+            max-width: 850px;
+            padding: 40px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .exit-x {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            color: var(--sub);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        h1 {
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .topic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .topic-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: 6px;
+            color: var(--text);
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .topic-btn:hover {
+            background: var(--hover);
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--sub);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .question {
+            font-size: 17px;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .opt {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .opt.selected {
+            border-color: var(--sub);
+            background: var(--hover);
+        }
+
+        .opt.correct {
+            background: var(--correct);
+            border-color: var(--correct-text);
+            color: var(--correct-text);
+        }
+
+        .opt.wrong {
+            background: var(--wrong);
+            border-color: var(--wrong-text);
+            color: var(--wrong-text);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            background: var(--hover);
+            border: 1px solid var(--border);
+            font-size: 13px;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .nav-btn {
+            margin-top: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            float: right;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        p {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false;">
+
+    <div class="external-controls">
+        <button id="theme-btn" class="theme-toggle" onclick="toggleTheme()">Light Mode</button>
+    </div>
+
+    <div class="container">
+        <button id="exit-btn" class="exit-x hidden" onclick="backToHome()">✕</button><br>
+
+        <div id="home">
+            <h1>Metodología de pruebas de software</h1>
+            <p>Test choice de 70 preguntas para practicar</p>
+            <div class="topic-grid">
+                <button class="topic-btn" onclick="init(0)"></i> 1. V&V y Riesgos</button>
+                <button class="topic-btn" onclick="init(1)"></i> 2. Gestión QA/QC/QM</button>
+                <button class="topic-btn" onclick="init(2)"></i> 3. Historias e INVEST</button>
+                <button class="topic-btn" onclick="init(3)"></i> 4. Manifiesto Ágil</button>
+                <button class="topic-btn" onclick="init(4)"></i> 5. Cuadrantes y Niveles</button>
+                <button class="topic-btn" onclick="init(5)"></i> 6. SDLC y Modelo V</button>
+                <button class="topic-btn" onclick="init(6)"></i> 7. Defectos e ISO 25010</button>
+            </div>
+        </div>
+
+        <div id="quiz" class="hidden">
+            <div class="quiz-info">
+                <span id="t-name"></span>
+                <span>Tiempo: <span id="clock" style="color:var(--wrong-text)">30</span>s</span>
+                <span id="q-count"></span>
+            </div>
+            <div id="q-text" class="question"></div>
+            <div id="opts" class="options"></div>
+            <div id="feed" class="feedback"></div>
+            <button id="action-btn" class="nav-btn" onclick="step()" disabled>Confirmar</button>
+        </div>
+
+        <div id="finish" class="hidden" style="text-align: center;">
+            <h2 id="final-res"></h2>
+            <button class="nav-btn" style="float:none" onclick="location.reload()">Volver al Menú</button>
+        </div>
+    </div>
+
+    <script>
+        const _data = "W3sidCI6IlYmViB5IFJpZXNnb3MiLCJxcyI6W3sicSI6IkphbWVzIEJhY2ggZGVmaW5lIGVsIHRlc3RpbmcgY29tbyBjb21wYXJhciBsbyBpbnZpc2libGUgY29uIGxvOiIsImEiOlsiVmlzaWJsZSIsIlRhbmdpYmxlIiwiSW52aXNpYmxlIiwiRG9jdW1lbnRhZG8iXSwiYyI6MiwiZSI6IkJhY2ggZXhwbGljYSBxdWUgZWwgdGVzdGluZyBlcyB1biBwcm9jZXNvIG1lbnRhbCBkb25kZSBjb21wYXJhbW9zIGVsIHNpc3RlbWEgaW52aXNpYmxlIGNvbnRyYSBudWVzdHJvcyBtb2RlbG9zIGludmlzaWJsZXMuIn0seyicSI6IsK/UXVlIHByb2Nlc28gYnVzY2EgcmVzcG9uZGVyICfCvyBFc3RhbW9zIGNvbnN0cnV5ZW5kbyBlbCBwcm9kdWN0byBjb3JyZWN0bz8nIiwiYSI6WyJWZXJpZmljYWNpw7NuIiwiTWFudGVuaW1pZW50byIsIlZhbGlkYWNpw7NuIiwiRGlzZcOxbyJdLCJjIjoyLCJlIjoiaHR0cHM6Ly93d3cuaXN0cWIub3JnIC0gTGEgVmFsaWRhY2nDs24gYXNlZ3VyYSBxdWUgZWwgcHJvZHVjdG8gc2F0aXNmYWNlIGxhcyBuZWNlc2lkYWRlcyBkZWwgdXN1YXJpby4ifSx7InEiOiJFbCByaWVzZ28gZGUgcHJvZHVjdG8gc2UgcmVsYWNpb25hIGNvbjoiLCJhIjpbIkZhbHRhIGRlIHByZXN1cHVlc3RvIiwiRmFsbGFzIGVuIGxhIGNhbGlkYWQgZGVsIHNvZnR3YXJlIiwiUmVudW5jaWEgZGUgcGVyc29uYWwiLCJSZXRyYXNvIGVuIGVudHJlZ2EiXSwiYyI6MSwiZSI6IkVsIHJpZXNnbyBkZSBwcm9kdWN0byBlcyBsYSBwb3NpYmlsaWRhZCBkZSBxdWUgZWwgc29mdHdhcmUgZmFsbGUgZW4gY3VtcGxpciBzdXMgcmVxdWlzaXRvcy4ifSx7InEiOiJMYSB2ZXJpZmljYWNpw7NuIGFzZWd1cmEgcXVlIGVsIHByb2R1Y3RvIGN1bXBsZSBjb246IiwiYSI6WyJMYSBuZWNlc2lkYWQgZGVsIHVzdWFyaW8iLCJMYSBlc3BlY2lmaWNhY2nDs24gdMOpY25pY2EiLCJFbCB2YWxvciBkZSBtZXJjYWRvIiwiRWwgdGllbXBvIGRlIHNwcmludCJdLCJjIoxsImUiOiJWZXJpZmljYWNpw7NuID0gwr9FcyBjb25mb3JtZSBhIGxvcyByZXF1aXNpdG9zIGRlIGRpc2XDsW8/In0seyicSI6IlNlZ8O6biBEaWprc3RyYSwgbGFzIHBydWViYXMgcHVkZGVuIGRlbW9zdHJhciBsYToiLCJhIjpbIkF1c2VuY2lhIGRlIGVycm9yZXMiLCJQZXJmZWNjacOzbiIsIlByZXNlbmNpYSBkZSBlcnJvcmVzIiwiVXRpbGlkYWQgZGVsIHNpc3RlbWEiXSwiYyI6MiwiZSI6IkVsIHRlc3Rpbmcgc29sbyBwdWVkZSBwcm9iYXIgcXVlIGhheSBmYWxsYXMsIG51bmNhIGFzZWd1cmFyIHF1ZSBubyBleGlzdGVuIG3DoXMuIn0seyicSI6IlVuIHJpZXNnbyBkZSBwcm95ZWN0byBpbXBhY3RhIHByaW5jaXBhbG1lbnRlIGVuOiIsImEiOlsiTGExIHVzYWJpbGlkYWQiLCJMb3MgcGxhem9zLCByZWN1cnNvcyB5IGVudHJlZ2EiLCJMYSBmaWFiaWxpZGFkIiwiTGEgc2VndXJpZGFkIGRlIGRhdG9zIl0sImMiOjEsImUiOiJBZmVjdGEgYSBsYSBnZXN0acOzbiBkZWwgcHJveWVjdG8sIGNvbW8gdGllbXBvcyB5IGNvc3Rvcy4ifSx7InEiOiJMYSB2YWxpZGFjacOzbiB0w6lwaWNhbWVudGUgcmVxdWllcmU6IiwiYSI6WyJSZXZpc2nDs24gZGUgZG9jdW1lbnRvcyIsIkVqZWN1Y2nDs24gZGVsIHNvZnR3YXJlIiwiQW5hbGlzaXMgZGUgc2VndXJpZGFkIiwiTGVjdHVyYSBkZSBjw7NkaWdvIl0sImMiOjEsImUiOiJWYWxpZGFyIHJlcXVpZXJlIGVqZWN1dGFyIGVsIHNvZnR3YXJlIHBhcmEgdmVyIHNpIGVzIMO6dGlsIHBhcmEgZWwgdXN1YXJpby4ifSx7InEiOiJVbiBldmVudG8gaW5jaWVydG8gY29uIGltcGFjdG8gcG90ZW5jaWFsIGVzIHVuOiIsImEiOlsiRGVmZWN0byIsIkZhbGxvIiwiUmllc2dvIiwiRXJyb3IiXSwiYyI6MiwiZSI6IlJpZXNnbyBlcyBsYSBwcm9iYWJpbGlkYWQgZGUgcXVlIG9jdXJyYSB1biBldmVudG8gY29uIGltcGFjdG8gbmVnYXRpdm8uIn0seyicSI6IkxhIGZhbGFjaWEgZGUgYXVzZW5jaWEgZGUgZXJyb3JlcyBpbmRpY2EgcXVlOiIsImEiOlsiU2kgbm8gaGF5IGJ1Z3MgZWwgc2lzdGVtYSBlcyDDunRpbCIsIk5vIHRlbmVyIGJ1Z3Mgbm8gZ2FyYW50aXphIHVuIHN5c3RlbWEgw7p0aWwiLCJFcyBwb3NpYmxlIG5vIHRlbmVyIGVycm9yZXMiLCJFbCB0ZXN0ZXIgbm8gZGViZSBidXNjYXIgYnVncyJdLCJjIoxsImUiOiJVbiBzb2Z0d2FyZSBzaW4gYnVncyBwdWVkZSBzZXIgaW7DunRpbCBzaSBubyBoYWNlIGxvIHF1ZSBlbCB1c3VhcmlvIG5lY2VzaXRhLiJ9LHsicSI6IkxhIHZlcmlmaWNhY2nDs24gb2N1cnJlIHByaW5jaXBhbG1lbnRlIGVuOiIsImEiOlsiRWwgZmluYWwgZGVsIHByb3llY3RvIiwiRmFzZXMgdGVtcHJhbmFzIHkgZG9jdW1lbnRhY2nDs24iLCJTb2xvIGVuIHByb2R1Y2Npw7NuIiwiRW4gbGEgbWVudGUgZGVsIGNsaWVudGUiXSwiYyI6MSwiZSI6IlNlIHZlcmlmaWNhbiBwbGFub3MsIGRpc2XDsW9zIHkgY8OzZGlnby4ifV19XQ==";
+
+        const dbFull = [
+            {
+                t: "V&V y Riesgos", qs: [
+                    { q: "James Bach define el testing como comparar lo invisible con lo:", a: ["Visible", "Tangible", "Invisible", "Documentado"], c: 2, e: "Para Bach, comparamos el sistema (invisible) contra nuestros modelos mentales (invisibles)." },
+                    { q: "¿Qué proceso responde a '¿Estamos construyendo el producto correcto?'?", a: ["Verificación", "Gestión de Configuración", "Validación", "Auditoría"], c: 2, e: "La Validación asegura que el producto satisface las necesidades reales del cliente." },
+                    { q: "El riesgo de producto se diferencia del de proyecto porque:", a: ["Afecta al presupuesto", "Se refiere a fallas en la calidad del software", "Depende de la renuncia de personal", "Se enfoca en los plazos"], c: 1, e: "El riesgo de producto es la posibilidad de que el software no cumpla con requisitos técnicos." },
+                    { q: "La verificación asegura que el producto cumple con:", a: ["Las necesidades del negocio", "La especificación técnica", "La satisfacción del usuario", "El retorno de inversión"], c: 1, e: "Verificar es comprobar si el producto se construyó de acuerdo a los diseños." },
+                    { q: "Dijkstra afirma que el testing permite:", a: ["Garantizar la perfección", "Demostrar la ausencia de errores", "Demostrar la presencia de errores", "Eliminar todos los defectos"], c: 2, e: "El testing solo muestra que existen fallas, nunca que ya no hay ninguna." },
+                    { q: "Un riesgo de proyecto impacta directamente en:", a: ["La mantenibilidad", "Los recursos y plazos de entrega", "La seguridad del código", "La usabilidad"], c: 1, e: "Afecta a la gestión: falta de personal, hardware o retrasos." },
+                    { q: "La validación usualmente implica:", a: ["Revisar diagramas", "Ejecutar el software construido", "Analizar documentos", "Revisión de código"], c: 1, e: "Validar requiere ver el software en funcionamiento para el usuario." },
+                    { q: "En el contexto de riesgos, la 'Probabilidad' se refiere a:", a: ["El costo del daño", "La frecuencia esperada del evento", "La gravedad del fallo", "La visibilidad"], c: 1, e: "Es la posibilidad de que el evento incierto llegue a ocurrir." },
+                    { q: "La falacia de ausencia de errores sugiere que:", a: ["Si no hay bugs el software es exitoso", "Un sistema sin errores puede no ser útil", "El testing exhaustivo es posible", "No se deben reportar errores"], c: 1, e: "Si no cumple lo que el usuario necesita, no importa que no tenga bugs." },
+                    { q: "Identificar riesgos tempranamente permite:", a: ["Eliminar el testing", "Diseñar mejores casos de prueba", "Aumentar el presupuesto", "Retrasar el desarrollo"], c: 1, e: "Permite enfocar el esfuerzo en las áreas más peligrosas del sistema." }
+                ]
+            },
+            {
+                t: "Gestión de Calidad (QA/QC/QM)", qs: [
+                    { q: "QA (Aseguramiento) es un proceso:", a: ["Correctivo", "Orientado al producto", "Preventivo y orientado al proceso", "Basado solo en ejecución"], c: 2, e: "QA busca mejorar procesos para evitar que aparezcan defectos." },
+                    { q: "QC (Control) se enfoca en:", a: ["La mejora de procesos", "El producto final y detección de fallas", "La formación", "La definición de estándares"], c: 1, e: "QC es la parte operativa que mide la calidad del software terminado." },
+                    { q: "Quality Management (QM) integra:", a: ["QA y QC", "Solo testing", "Programación", "Gestión de hardware"], c: 0, e: "QM es el marco global que coordina tanto prevención como detección." },
+                    { q: "Un objetivo clave de QA es:", a: ["Encontrar más bugs", "Brindar confianza en el cumplimiento de requisitos", "Corregir código", "Pruebas de carga"], c: 1, e: "QA proporciona evidencia de que el proceso es capaz de generar calidad." },
+                    { q: "QC es una actividad de tipo:", a: ["Proactiva", "Reactiva", "Administrativa", "Organizacional"], c: 1, e: "Es reactiva porque actúa sobre el producto ya creado." },
+                    { q: "La calidad ISO depende de:", a: ["Costo", "Cumplimiento de requisitos implícitos y explícitos", "Velocidad", "Lenguaje"], c: 1, e: "Calidad es el grado en que características cumplen requisitos." },
+                    { q: "QA bien implementado reduce:", a: ["Sueldos", "Costo de retrabajo (rework)", "Comunicación", "Historias"], c: 1, e: "Prevenir errores gasta menos que corregirlos tarde." },
+                    { q: "¿Quién es el principal responsable de QC?", a: ["Gerente de Proyecto", "Equipo de Testing", "El cliente", "RRHH"], c: 1, e: "Los testers ejecutan las pruebas que validan el producto final." },
+                    { q: "La auditoría de calidad es una herramienta de:", a: ["QC", "QA", "Desarrollo", "Ventas"], c: 1, e: "Las auditorías verifican que se sigan los procesos definidos." },
+                    { q: "En Agile, la calidad es responsabilidad de:", a: ["Solo el tester", "Scrum Master", "Todo el equipo", "Product Owner"], c: 2, e: "Es un compromiso transversal de todo el equipo multidisciplinario." }
+                ]
+            },
+            {
+                t: "Historias e INVEST", qs: [
+                    { q: "En INVEST, la 'I' significa:", a: ["Incremental", "Independiente", "Integral", "Inmediato"], c: 1, e: "Deben poder desarrollarse sin depender estrictamente de otras." },
+                    { q: "La 'N' de INVEST se refiere a:", a: ["No técnica", "Negociable", "Necesaria", "Nominal"], c: 1, e: "Es una invitación a la conversación, no un contrato cerrado." },
+                    { q: "Valuable (V) en INVEST significa:", a: ["Costosa", "Aporte valor al negocio", "Fácil de vender", "Muchos puntos"], c: 1, e: "Si no aporta valor claro, no debería estar en el backlog." },
+                    { q: "Estimable (E) implica que:", a: ["El cliente sabe el precio", "El equipo puede dimensionar el esfuerzo", "Es infinita", "No se mide"], c: 1, e: "El equipo debe entenderla para asignarle complejidad." },
+                    { q: "Small (S) sugiere que una historia debe:", a: ["Ocupar una línea", "Poder completarse en un sprint", "Ser corta", "Tener pocos caracteres"], c: 1, e: "Si es muy grande (Epic), debe dividirse." },
+                    { q: "Testable (T) es fundamental para:", a: ["Velocidad", "Verificar cumplimiento de criterios de aceptación", "Escribir código", "Ahorrar"], c: 1, e: "Si no se puede probar, no podemos saber si está Done." },
+                    { q: "Las 3 'C' son:", a: ["Costo/Calidad/Cant", "Card/Conversation/Confirmation", "Código/Cliente/Ctrl", "Calidad/Criterio"], c: 1, e: "Soporte físico, diálogo y validación final." },
+                    { q: "El Criterio de Aceptación define:", a: ["Salario", "Condiciones para dar por terminada una historia", "Nombre App", "DB"], c: 1, e: "Reglas específicas que el software debe cumplir para ser aceptado." },
+                    { q: "Un 'Epic' es:", a: ["Historia buena", "Historia demasiado grande que debe descomponerse", "Bug", "Reunión"], c: 1, e: "Funcionalidad que requiere múltiples historias menores." },
+                    { q: "Planning Poker sirve para:", a: ["Jugar", "Estimar esfuerzo por consenso", "Asignar tareas", "Criticar"], c: 1, e: "Ayuda a dimensionar historias basándose en la visión de todo el equipo." }
+                ]
+            },
+            {
+                t: "Manifiesto Ágil", qs: [
+                    { q: "Se valoran Individuos e interacciones sobre:", a: ["Calidad", "Procesos y herramientas", "Código", "Jerarquía"], c: 1, e: "El factor humano es el motor de la agilidad." },
+                    { q: "Software funcionando sobre:", a: ["Documentación extensiva", "Reuniones", "Diseño", "Pruebas"], c: 0, e: "Es preferible valor real que manuales perfectos." },
+                    { q: "Colaboración con el cliente sobre:", a: ["Llamadas", "Negociación contractual", "Bugs", "Estimación"], c: 1, e: "Trabajar con el cliente, no contra él mediante contratos rígidos." },
+                    { q: "Respuesta ante el cambio sobre:", a: ["Seguir un plan", "Hablar", "Código", "Comprar"], c: 0, e: "Capacidad de pivotar cuando el mercado cambia." },
+                    { q: "La mayor prioridad es satisfacer al cliente mediante:", a: ["Documentación", "Entrega temprana y continua de valor", "Regresión", "Costos"], c: 1, e: "Entregar valor frecuente es el corazón del éxito." },
+                    { q: "Los cambios en requisitos son:", a: ["Prohibidos", "Bienvenidos incluso en etapas tardías", "Multados", "Ignorados"], c: 1, e: "El proceso ágil aprovecha el cambio para ventaja competitiva." },
+                    { q: "El intervalo de entrega preferido es:", a: ["6 meses", "De semanas a un par de meses", "Cada año", "Diario"], c: 1, e: "Ciclos cortos de feedback para corregir el rumbo." },
+                    { q: "Método más eficiente de comunicación:", a: ["Email", "Conversación cara a cara", "Jira", "PDF"], c: 1, e: "Reduce malentendidos y aumenta la velocidad." },
+                    { q: "Medida principal de progreso:", a: ["Horas", "Software que funciona", "Líneas código", "Documentos"], c: 1, e: "Nada cuenta si el software no está operativo." },
+                    { q: "Excelencia técnica y buen diseño:", a: ["Secundarios", "Mejoran la agilidad", "Son lentos", "Al final"], c: 1, e: "Código limpio permite cambiar más rápido en el futuro." }
+                ]
+            },
+            {
+                t: "Cuadrantes y Niveles", qs: [
+                    { q: "Cuadrante 1 (Q1) se enfoca en:", a: ["Usuario", "Tecnología/Equipo (Unitarias)", "Seguridad", "Manuales"], c: 1, e: "Base técnica, automatizada y enfocada en el código." },
+                    { q: "Cuadrante 2 (Q2) busca:", a: ["Atacar sistema", "Apoyar al negocio (Historias)", "Rendimiento", "Estrés"], c: 1, e: "Verifica que se cumplan los requisitos de negocio." },
+                    { q: "Regresión se ubica principalmente en:", a: ["Q1 y Q2", "Q4", "Solo Q3", "Fuera"], c: 0, e: "Aseguran que lo que funcionaba no se rompió." },
+                    { q: "Cuadrante 3 (Q3) es:", a: ["Automatizado", "Manual/Crítica (Exploratorio/Usabilidad)", "DB", "Carga"], c: 1, e: "Uso de intuición y experiencia humana para hallar fallas." },
+                    { q: "Cuadrante 4 (Q4) se dedica a:", a: ["Unitarias", "Tecnología/Crítica (Perf/Seguridad)", "Humo", "Historias"], c: 1, e: "Atributos no funcionales con herramientas especializadas." },
+                    { q: "Pruebas Unitarias buscan fallas en:", a: ["Integración", "Módulos individuales", "Sistema", "Red"], c: 1, e: "Testeo de unidad mínima aislada." },
+                    { q: "Integración verifica:", a: ["UI", "Comunicación entre componentes", "Hardware", "Ortografía"], c: 1, e: "Aseguran que módulos trabajen bien juntos." },
+                    { q: "Pruebas de Sistema evalúan:", a: ["Código", "Producto completo integrado", "DB aislada", "Contrato"], c: 1, e: "Visión end-to-end del software funcional." },
+                    { q: "UAT es realizado por:", a: ["Dev", "Usuario final/Cliente", "Scrum Master", "Robot"], c: 1, e: "Valida aptitud para uso en mundo real." },
+                    { q: "Pruebas de Humo (Smoke) sirven para:", a: ["Incendios", "Verificar funciones básicas operativas", "Temp", "Seguridad"], c: 1, e: "Decidir si vale la pena seguir testeando una versión." }
+                ]
+            },
+            {
+                t: "SDLC y Modelo V", qs: [
+                    { q: "¿Qué es SDLC?", a: ["Data Logic", "Software Development Life Cycle", "Design Code", "Digital Cycle"], c: 1, e: "Proceso de creación, mantenimiento y retiro." },
+                    { q: "En Modelo V, las pruebas se planifican:", a: ["Al final", "En paralelo a definición/diseño", "Después entrega", "Nunca"], c: 1, e: "Cada fase de desarrollo tiene su par de prueba." },
+                    { q: "Requerimientos se corresponde con:", a: ["Unitarias", "Aceptación", "Componentes", "Integración"], c: 1, e: "Requisitos definen qué aceptará el usuario." },
+                    { q: "La Codificación precede a:", a: ["Sistema", "Unitarias", "Negocio", "Venta"], c: 1, e: "Tras escribir código, se hacen pruebas de unidad." },
+                    { q: "Ventaja del Modelo V:", a: ["Flexible", "Niveles claros desde inicio", "Sin doc", "Barato"], c: 1, e: "Aporta estructura y disciplina a la calidad." },
+                    { q: "El mantenimiento ocurre:", a: ["Solo bugs", "Tras entrega (Corregir/Adaptar)", "En codificación", "Antes diseño"], c: 1, e: "Fase donde el software evoluciona vivo." },
+                    { q: "Cascada (Waterfall), testing empieza:", a: ["Día 1", "Cuando desarrollo termina", "Requerimientos", "Mitad"], c: 1, e: "Crítica: el testing llega demasiado tarde." },
+                    { q: "Shift Left Testing propone:", a: ["Mover final", "Probar lo más temprano posible", "Eliminar testers", "Linux"], c: 1, e: "Hallar errores antes es más barato." },
+                    { q: "Diseño Detallado se valida con:", a: ["Sistema", "Integración", "Unitarias", "Aceptación"], c: 1, e: "Diseño técnico cuando componentes interactúan." },
+                    { q: "SDLC termina cuando:", a: ["Entrega", "Software es retirado de uso", "Tester duerme", "Pagan"], c: 1, e: "Incluye hasta el retiro final del producto." }
+                ]
+            },
+            {
+                t: "ISO 25010", qs: [
+                    { q: "Un 'Error' es cometido por:", a: ["Software", "Humano (Dev/Analista)", "Hardware", "Usuario"], c: 1, e: "Equivocación humana que produce defecto." },
+                    { q: "Un 'Defecto' (Bug) reside en:", a: ["Mente", "Código o documentación", "Manual", "Factura"], c: 1, e: "Manifestación física del error en artefacto." },
+                    { q: "Un 'Fallo' ocurre cuando:", a: ["Compila", "Software presenta comportamiento incorrecto en ejecución", "Reporte", "Luz"], c: 1, e: "Desviación visible del servicio esperado." },
+                    { q: "Adecuación Funcional:", a: ["Rápido", "Hace lo que debe hacer", "Fácil", "Seguro"], c: 1, e: "Grado en que funciones cubren necesidades." },
+                    { q: "Usabilidad mide:", a: ["Velocidad", "Facilidad aprendizaje y uso", "Ataques", "Instalación"], c: 1, e: "Satisfacción y facilidad de operar." },
+                    { q: "Mantenibilidad:", a: ["Fácil modificar a futuro", "Servidor ON", "Barato", "Móvil"], c: 0, e: "Cambios rápidos sin romper todo." },
+                    { q: "Fiabilidad implica:", a: ["Bonito", "Funciona bajo condiciones por tiempo definido", "Traducir", "Manual"], c: 1, e: "Capacidad de mantener nivel de rendimiento." },
+                    { q: "Portabilidad evalúa:", a: ["Peso", "Facilidad trasladar entre entornos", "Licencia", "Colores"], c: 1, e: "Mover entre SO o servidores fácilmente." },
+                    { q: "Eficiencia de Desempeño:", a: ["Líneas", "Tiempos respuesta y recursos", "Ortografía", "Marca"], c: 1, e: "Comportamiento bajo carga (Velocidad/RAM)." },
+                    { q: "Seguridad busca:", a: ["No borre", "Protección datos y acceso autorizado", "Antivirus", "No robo"], c: 1, e: "Protección de info para evitar accesos no deseados." }
+                ]
+            }
+        ];
+
+
+        document.addEventListener('keydown', (e) => {
+
+            if (
+                e.key === "F12" ||
+                (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) ||
+                (e.ctrlKey && e.key === "u")
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+        let s = 0, i = 0, pts = 0, clk, rem = 30, done = false, cur = null;
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.dataset.theme = savedTheme;
+        document.getElementById('theme-btn').innerText = savedTheme === "light" ? "Dark Mode" : "Light Mode";
+
+        function toggleTheme() {
+            const b = document.body;
+            const btn = document.getElementById('theme-btn');
+
+            if (b.dataset.theme === "light") {
+                b.dataset.theme = "dark";
+                btn.innerText = "Light Mode";
+                localStorage.setItem('theme', 'dark');
+            } else {
+                b.dataset.theme = "light";
+                btn.innerText = "Dark Mode";
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function init(idx) {
+            s = idx; i = 0; pts = 0;
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('exit-btn').classList.remove('hidden');
+            document.getElementById('quiz').classList.remove('hidden');
+            load();
+        }
+
+        function load() {
+            done = false; cur = null; rem = 30;
+            const q = dbFull[s].qs[i];
+            document.getElementById('t-name').innerText = dbFull[s].t;
+            document.getElementById('q-count').innerText = `Q ${i + 1}/10`;
+            document.getElementById('q-text').innerText = q.q;
+            document.getElementById('feed').style.display = 'none';
+            document.getElementById('action-btn').innerText = "Confirmar";
+            document.getElementById('action-btn').disabled = true;
+
+            const box = document.getElementById('opts');
+            box.innerHTML = '';
+            q.a.forEach((t, idx) => {
+                const d = document.createElement('div');
+                d.className = 'opt';
+                d.innerText = t;
+                d.onclick = () => {
+                    if (!done) {
+                        cur = idx;
+                        Array.from(box.children).forEach(c => c.classList.remove('selected'));
+                        d.classList.add('selected');
+                        document.getElementById('action-btn').disabled = false;
+                    }
+                };
+                box.appendChild(d);
+            });
+            startClock();
+        }
+
+        function startClock() {
+            clearInterval(clk);
+            document.getElementById('clock').innerText = rem;
+            clk = setInterval(() => {
+                rem--; document.getElementById('clock').innerText = rem;
+                if (rem <= 0) { clearInterval(clk); if (!done) { cur = null; step(); } }
+            }, 1000);
+        }
+
+        function step() {
+            const q = dbFull[s].qs[i];
+            if (!done) {
+                clearInterval(clk); done = true;
+                const os = document.getElementById('opts').children;
+                if (cur === q.c) { pts++; os[q.c].classList.add('correct'); }
+                else { if (cur !== null) os[cur].classList.add('wrong'); os[q.c].classList.add('correct'); }
+
+                const f = document.getElementById('feed');
+                f.innerHTML = `<strong>${cur === q.c ? '¡Correcto!' : 'Incorrecto'}</strong><br>${q.e}`;
+                f.style.display = 'block';
+                document.getElementById('action-btn').innerText = "Siguiente";
+            } else {
+                i++; if (i < 10) load(); else finish();
+            }
+        }
+
+        function backToHome() {
+            clearInterval(clk);
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('finish').classList.add('hidden');
+            document.getElementById('exit-btn').classList.add('hidden');
+            document.getElementById('home').classList.remove('hidden');
+        }
+
+        function finish() {
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('finish').classList.remove('hidden');
+            document.getElementById('final-res').innerText = `Tu puntaje: ${(pts / 10) * 100}% (${pts}/10)`;
+        }
+
+        document.onkeydown = (e) => { if (e.keyCode == 123) return false; };
+    </script>
+</body>
+
+</html>
