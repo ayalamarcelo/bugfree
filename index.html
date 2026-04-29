@@ -5,7 +5,13 @@
     <meta charset="UTF-8">
     <title>Bug Free?</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
         :root {
             --bg: #0d1117;
             --card: #161b22;
@@ -190,6 +196,123 @@
             text-align: center;
             margin-bottom: 30px;
         }
+
+        .topic-btn.completed {
+            border-color: var(--correct-text);
+            background: var(--correct);
+            color: var(--correct-text);
+            position: relative;
+        }
+
+        .topic-btn.completed::after {
+            content: " ✓";
+            font-weight: bold;
+        }
+
+
+        .leaderboard-btn {
+            background: var(--hover);
+            border: 2px dashed var(--border);
+            grid-column: span 2;
+            justify-content: center;
+        }
+
+        /* Estilos del Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .winner-link {
+            color: var(--accent);
+            text-decoration: none;
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* Adaptación para móviles */
+
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                max-width: none;
+                padding: 20px;
+                border: none;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+
+            .topic-grid {
+                /* Cambiamos a una sola columna para que se apilen */
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .topic-btn {
+                width: 100%;
+                /* Asegura que ocupen todo el ancho */
+                padding: 20px;
+                font-size: 16px;
+                display: flex;
+                justify-content: flex-start;
+                /* Alinea el texto a la izquierda */
+            }
+
+            .leaderboard-btn {
+                /* En móvil ya no hace falta que ocupe 2 columnas porque solo hay una */
+                grid-column: span 1;
+            }
+
+            .nav-btn {
+                width: 100%;
+                float: none;
+                padding: 16px;
+                font-size: 16px;
+                margin-top: 25px;
+            }
+
+            .question {
+                font-size: 18px;
+            }
+
+            .opt {
+                padding: 16px;
+                font-size: 15px;
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 
@@ -203,7 +326,7 @@
         <button id="exit-btn" class="exit-x hidden" onclick="backToHome()">✕</button><br>
 
         <div id="home">
-            <h1>Metodología de pruebas de software</h1>
+            <h1>🧪 Metodología de pruebas de software</h1>
             <p>Test choice de 70 preguntas para practicar</p>
             <div class="topic-grid">
                 <button class="topic-btn" onclick="init(0)"></i> 1. V&V y Riesgos</button>
@@ -213,6 +336,12 @@
                 <button class="topic-btn" onclick="init(4)"></i> 5. Cuadrantes y Niveles</button>
                 <button class="topic-btn" onclick="init(5)"></i> 6. SDLC y Modelo V</button>
                 <button class="topic-btn" onclick="init(6)"></i> 7. Defectos e ISO 25010</button>
+                <button class="topic-btn"></i>Próximamente más temas...</button>
+                <button class="topic-btn leaderboard-btn" onclick="showLeaderboard()">
+                    📊 Ver Leaderboard
+                </button>
+
+                <div id="modal-container"></div>
             </div>
         </div>
 
@@ -230,7 +359,7 @@
 
         <div id="finish" class="hidden" style="text-align: center;">
             <h2 id="final-res"></h2>
-            <button class="nav-btn" style="float:none" onclick="location.reload()">Volver al Menú</button>
+            <button class="nav-btn" onclick="backToHome()">Volver al Menú</button>
         </div>
     </div>
 
@@ -239,21 +368,23 @@
 
         const dbFull = [
             {
-                t: "V&V y Riesgos", qs: [
-                    { q: "James Bach define el testing como comparar lo invisible con lo:", a: ["Visible", "Tangible", "Ambiguo", "Documentado"], c: 2, e: "Para Bach, comparamos lo invisible(código) con lo ambiguo(especificaciones)." },
-                    { q: "¿Qué proceso responde a '¿Estamos construyendo el producto correcto?'?", a: ["Verificación", "Gestión de Configuración", "Validación", "Auditoría"], c: 2, e: "La Validación asegura que el producto satisface las necesidades reales del cliente." },
-                    { q: "El riesgo de producto se diferencia del de proyecto porque:", a: ["Afecta al presupuesto", "Se refiere a fallas en la calidad del software", "Depende de la renuncia de personal", "Se enfoca en los plazos"], c: 1, e: "El riesgo de producto es la posibilidad de que el software no cumpla con requisitos técnicos." },
-                    { q: "La verificación asegura que el producto cumple con:", a: ["Las necesidades del negocio", "La especificación técnica", "La satisfacción del usuario", "El retorno de inversión"], c: 1, e: "Verificar es comprobar si el producto se construyó de acuerdo a los diseños." },
-                    { q: "Dijkstra afirma que el testing permite:", a: ["Garantizar la perfección", "Demostrar la ausencia de errores", "Demostrar la presencia de errores", "Eliminar todos los defectos"], c: 2, e: "El testing solo muestra que existen fallas, nunca que ya no hay ninguna." },
-                    { q: "Un riesgo de proyecto impacta directamente en:", a: ["La mantenibilidad", "Los recursos y plazos de entrega", "La seguridad del código", "La usabilidad"], c: 1, e: "Afecta a la gestión: falta de personal, hardware o retrasos." },
-                    { q: "La validación usualmente implica:", a: ["Revisar diagramas", "Ejecutar el software construido", "Analizar documentos", "Revisión de código"], c: 1, e: "Validar requiere ver el software en funcionamiento para el usuario." },
-                    { q: "En el contexto de riesgos, la 'Probabilidad' se refiere a:", a: ["El costo del daño", "La frecuencia esperada del evento", "La gravedad del fallo", "La visibilidad"], c: 1, e: "Es la posibilidad de que el evento incierto llegue a ocurrir." },
-                    { q: "La falacia de ausencia de errores sugiere que:", a: ["Si no hay bugs el software es exitoso", "Un sistema sin errores puede no ser útil", "El testing exhaustivo es posible", "No se deben reportar errores"], c: 1, e: "Si no cumple lo que el usuario necesita, no importa que no tenga bugs." },
-                    { q: "Identificar riesgos tempranamente permite:", a: ["Eliminar el testing", "Diseñar mejores casos de prueba", "Aumentar el presupuesto", "Retrasar el desarrollo"], c: 1, e: "Permite enfocar el esfuerzo en las áreas más peligrosas del sistema." }
+                t: "V&V, Testing y Riesgos",
+                qs: [
+                    { q: "Según el texto, ¿cuál de las siguientes afirmaciones sobre la Verificación es INCORRECTA?", a: ["Se realiza durante todo el desarrollo", "Responde a: ¿Estamos construyendo el producto correctamente?", "Se enfoca en si el usuario necesitaba un neumático", "Controla que el producto represente su especificación inicial"], c: 2, e: "Descubrir que el usuario necesitaba un neumático es parte de la Validación, no de la Verificación." },
+                    { q: "¿Qué es el testing según la definición dinámica del texto?", a: ["Revisar documentos sin ejecutar", "Comprobar dinámicamente que el sistema cumple requerimientos", "Planificar los plazos del proyecto", "Garantizar la ausencia total de errores"], c: 1, e: "El testing implica ejecución para verificar el cumplimiento de historias de usuario." },
+                    { q: "James Bach define el testing como el proceso de comparar:", a: ["Lo visible (código) con lo exacto (plano)", "Lo invisible (código) con lo ambiguo (especificaciones)", "Lo dinámico con lo estático", "El presupuesto con el tiempo"], c: 1, e: "Bach utiliza 'invisible' para el código y 'ambiguo' para las especificaciones." },
+                    { q: "Según Dijkstra, el testing es una forma adecuada de:", a: ["Mostrar la ausencia de errores", "Garantizar la perfección del código", "Mostrar la presencia de errores", "Eliminar la incertidumbre"], c: 2, e: "Dijkstra afirma que el testing muestra que hay errores, pero no puede probar que no existan más." },
+                    { q: "Un riesgo se define técnicamente como:", a: ["Un error ya ocurrido en producción", "Un evento cierto que afecta al costo", "Un evento incierto con probabilidad e impacto", "La renuncia confirmada de un programador"], c: 2, e: "El riesgo es incierto por definición; si ya ocurrió o es seguro, deja de ser un riesgo." },
+                    { q: "Si un riesgo afecta directamente a la calidad o el desempeño, es un riesgo de:", a: ["Negocio", "Proyecto", "Producto", "Externo"], c: 2, e: "Los riesgos de Producto son los que impactan específicamente en la calidad y el desempeño del software." },
+                    { q: "Los riesgos 'Externos' se caracterizan por ser:", a: ["Afectaciones a los plazos", "Ajenos a la organización", "Errores en el código fuente", "Falta de capacitación interna"], c: 1, e: "El texto define los riesgos externos como aquellos que están fuera del control de la organización." },
+                    { q: "En el ejemplo del columpio, la Verificación consiste en:", a: ["Preguntar al cliente si se divierte", "Comprobar la tabla y cuerdas según el plano técnico", "Cambiar la tabla por un neumático", "Analizar el impacto en el negocio"], c: 1, e: "Verificar es seguir el plano técnico; validar es entender qué hace feliz al usuario." },
+                    { q: "¿Cuál es un objetivo de la Validación según el texto?", a: ["Construir el producto correctamente", "Satisfacer requerimientos y necesidades del cliente", "Comparar lo invisible con lo ambiguo", "Controlar los plazos del proyecto"], c: 1, e: "La validación busca que el producto satisfaga las necesidades reales y responda a: ¿Estamos construyendo el producto correcto?" },
+                    { q: "Un riesgo que afecta a la organización se clasifica como:", a: ["Riesgo de Producto", "Riesgo de Negocio", "Riesgo de Proyecto", "Riesgo Incierto"], c: 1, e: "El texto vincula directamente los riesgos de Negocio con la afectación a la organización." }
                 ]
             },
             {
-                t: "Gestión de Calidad (QA/QC/QM)", qs: [
+                t: "Gestión de Calidad (QA/QC/QM)",
+                qs: [
                     { q: "QA (Aseguramiento) es un proceso:", a: ["Correctivo", "Orientado al producto", "Preventivo y orientado al proceso", "Basado solo en ejecución"], c: 2, e: "QA busca mejorar procesos para evitar que aparezcan defectos." },
                     { q: "QC (Control) se enfoca en:", a: ["La mejora de procesos", "El producto final y detección de fallas", "La formación", "La definición de estándares"], c: 1, e: "QC es la parte operativa que mide la calidad del software terminado." },
                     { q: "Quality Management (QM) integra:", a: ["QA y QC", "Solo testing", "Programación", "Gestión de hardware"], c: 0, e: "QM es el marco global que coordina tanto prevención como detección." },
@@ -267,7 +398,8 @@
                 ]
             },
             {
-                t: "Historias e INVEST", qs: [
+                t: "Historias e INVEST",
+                qs: [
                     { q: "En INVEST, la 'I' significa:", a: ["Incremental", "Independiente", "Integral", "Inmediato"], c: 1, e: "Deben poder desarrollarse sin depender estrictamente de otras." },
                     { q: "La 'N' de INVEST se refiere a:", a: ["No técnica", "Negociable", "Necesaria", "Nominal"], c: 1, e: "Es una invitación a la conversación, no un contrato cerrado." },
                     { q: "Valuable (V) en INVEST significa:", a: ["Costosa", "Aporte valor al negocio", "Fácil de vender", "Muchos puntos"], c: 1, e: "Si no aporta valor claro, no debería estar en el backlog." },
@@ -281,7 +413,8 @@
                 ]
             },
             {
-                t: "Manifiesto Ágil (Revisado)", qs: [
+                t: "Manifiesto Ágil (Revisado)",
+                qs: [
                     { q: "Se valoran los individuos e interacciones por encima de:", a: ["Planes de trabajo", "Procesos y herramientas", "Arquitectura técnica", "Gestión de riesgos"], c: 1, e: "El factor humano y la comunicación directa son el motor fundamental de la agilidad." },
                     { q: "¿Cuál de estas afirmaciones sobre el software funcionando es INCORRECTA?", a: ["Es la medida principal de progreso", "Se prefiere a la documentación", "Debe entregarse cada 6 meses", "Aporta valor real al cliente"], c: 2, e: "El manifiesto sugiere ciclos cortos (semanas o meses), 6 meses se considera un periodo muy largo." },
                     { q: "La colaboración con el cliente se prioriza por encima de:", a: ["La negociación contractual", "El análisis de requerimientos", "Las reuniones de estatus", "La validación de calidad"], c: 0, e: "Se busca una sociedad con el cliente en lugar de una relación basada solo en el cumplimiento legal." },
@@ -295,7 +428,8 @@
                 ]
             },
             {
-                t: "Cuadrantes y Niveles", qs: [
+                t: "Cuadrantes y Niveles",
+                qs: [
                     { q: "Cuadrante 1 (Q1) se enfoca en:", a: ["Usuario", "Tecnología/Equipo (Unitarias)", "Seguridad", "Manuales"], c: 1, e: "Base técnica, automatizada y enfocada en el código." },
                     { q: "Cuadrante 2 (Q2) busca:", a: ["Atacar sistema", "Apoyar al negocio (Historias)", "Rendimiento", "Estrés"], c: 1, e: "Verifica que se cumplan los requisitos de negocio." },
                     { q: "Regresión se ubica principalmente en:", a: ["Q1 y Q2", "Q4", "Solo Q3", "Fuera"], c: 0, e: "Aseguran que lo que funcionaba no se rompió." },
@@ -309,7 +443,8 @@
                 ]
             },
             {
-                t: "SDLC y Modelo V", qs: [
+                t: "SDLC y Modelo V",
+                qs: [
                     { q: "¿Qué es SDLC?", a: ["Data Logic", "Software Development Life Cycle", "Design Code", "Digital Cycle"], c: 1, e: "Proceso de creación, mantenimiento y retiro." },
                     { q: "En Modelo V, las pruebas se planifican:", a: ["Al final", "En paralelo a definición/diseño", "Después entrega", "Nunca"], c: 1, e: "Cada fase de desarrollo tiene su par de prueba." },
                     { q: "Requerimientos se corresponde con:", a: ["Unitarias", "Aceptación", "Componentes", "Integración"], c: 1, e: "Requisitos definen qué aceptará el usuario." },
@@ -323,7 +458,8 @@
                 ]
             },
             {
-                t: "ISO 25010", qs: [
+                t: "ISO 25010",
+                qs: [
                     { q: "Un 'Error' es cometido por:", a: ["Software", "Humano (Dev/Analista)", "Hardware", "Usuario"], c: 1, e: "Equivocación humana que produce defecto." },
                     { q: "Un 'Defecto' (Bug) reside en:", a: ["Mente", "Código o documentación", "Manual", "Factura"], c: 1, e: "Manifestación física del error en artefacto." },
                     { q: "Un 'Fallo' ocurre cuando:", a: ["Compila", "Software presenta comportamiento incorrecto en ejecución", "Reporte", "Luz"], c: 1, e: "Desviación visible del servicio esperado." },
@@ -446,12 +582,129 @@
         }
 
         function finish() {
+            const topicButtons = document.querySelectorAll('.topic-btn');
+
+            if (topicButtons[s]) {
+                topicButtons[s].classList.add('completed');
+            }
+
             document.getElementById('quiz').classList.add('hidden');
             document.getElementById('finish').classList.remove('hidden');
-            document.getElementById('final-res').innerText = `Tu puntaje: ${(pts / 10) * 100}% (${pts}/10)`;
+
+            const porcentaje = (pts / 10) * 100;
+            document.getElementById('final-res').innerText = `Tu puntaje: ${porcentaje}% (${pts}/10)`;
+
+            if (pts >= 7) {
+
+                confetti({ particleCount: 100, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 100, angle: 120, spread: 55, origin: { x: 1 } });
+            }
         }
 
         document.onkeydown = (e) => { if (e.keyCode == 123) return false; };
+
+
+        let completedTests = new Set();
+        let totalSeconds = 0;
+
+
+        function init(idx) {
+            s = idx; i = 0; pts = 0;
+
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('exit-btn').classList.remove('hidden');
+            document.getElementById('quiz').classList.remove('hidden');
+            load();
+        }
+
+
+        function startClock() {
+            clearInterval(clk);
+            document.getElementById('clock').innerText = rem;
+            clk = setInterval(() => {
+                rem--;
+                totalSeconds++;
+                document.getElementById('clock').innerText = rem;
+                if (rem <= 0) { clearInterval(clk); if (!done) { cur = null; step(); } }
+            }, 1000);
+        }
+
+        function finish() {
+            const topicButtons = document.querySelectorAll('.topic-btn');
+            if (topicButtons[s]) {
+                topicButtons[s].classList.add('completed');
+                completedTests.add(s);
+            }
+
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('finish').classList.remove('hidden');
+
+            const porcentaje = (pts / 10) * 100;
+            document.getElementById('final-res').innerText = `Tu puntaje: ${porcentaje}% (${pts}/10)`;
+
+            if (pts >= 7) {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            }
+
+            if (completedTests.size === 7) {
+                setTimeout(showWinModal, 1000);
+            }
+        }
+
+        function showWinModal() {
+            const name = prompt("¡INCREÍBLE! Completaste todos los desafíos. Escribí tu nombre en el Leaderboard:");
+            if (name) {
+                const stats = {
+                    name: name,
+                    time: totalSeconds,
+                    date: new Date().toLocaleDateString()
+                };
+                saveScore(stats);
+                showLeaderboard();
+            }
+        }
+
+        function saveScore(newScore) {
+            let scores = JSON.parse(localStorage.getItem('quiz_scores') || '[]');
+            scores.push(newScore);
+            scores.sort((a, b) => a.time - b.time);
+            localStorage.setItem('quiz_scores', JSON.stringify(scores.slice(0, 5)));
+        }
+
+        function showLeaderboard() {
+            let scores = JSON.parse(localStorage.getItem('quiz_scores') || '[]');
+            let rows = scores.map((s, idx) => `
+        <tr>
+            <td>#${idx + 1}</td>
+            <td>${s.name}</td>
+            <td>${s.time}s</td>
+        </tr>
+    `).join('');
+
+            const modalHTML = `
+        <div class="modal-overlay">
+            <div class="modal-content">
+                <h2>🏆The Leaderboard</h2>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr><th>Pos</th><th>Nombre</th><th>Tiempo</th></tr>
+                    </thead>
+                    <tbody>${rows || '<tr><td colspan="3">Aún no hay récords</td></tr>'}</tbody>
+                </table>
+                <a href="https://www.youtube.com/watch?v=uXFpavraI_s&t=15s" target="_blank" class="winner-link">
+                    🎵 ¡Escuchar himno de victoria!
+                </a>
+                <br>
+                <button class="nav-btn" style="float:none; margin-top:20px" onclick="closeModal()">Cerrar</button>
+            </div>
+        </div>
+    `;
+            document.getElementById('modal-container').innerHTML = modalHTML;
+        }
+
+        function closeModal() {
+            document.getElementById('modal-container').innerHTML = '';
+        }
     </script>
 </body>
 
