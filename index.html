@@ -339,13 +339,15 @@
             <p>Test tipo 'multiple choice' para practicar</p>
             <div class="topic-grid">
                 <button class="topic-btn" onclick="init(0)"></i> 1. V&V y Riesgos</button>
-                <button class="topic-btn" onclick="init(1)"></i> 2. Gestión QA/QC/QM</button>
-                <button class="topic-btn" onclick="init(2)"></i> 3. Historias e INVEST</button>
-                <button class="topic-btn" onclick="init(3)"></i> 4. Manifiesto Ágil</button>
-                <button class="topic-btn" onclick="init(4)"></i> 5. Cuadrantes y Niveles</button>
-                <button class="topic-btn" onclick="init(5)"></i> 6. SDLC y Modelo V</button>
-                <button class="topic-btn" onclick="init(6)"></i> 7. Defectos e ISO 25010</button>
-                <button class="topic-btn"></i>Próximamente más temas...</button>
+                <button class="topic-btn" onclick="init(1)"></i> 2. Calidad de Software y Testing</button>
+                <button class="topic-btn" onclick="init(2)"></i> 3. Modelos de Calidad o de Excelencia, Testing vs
+                    Debugging</button>
+                <button class="topic-btn" onclick="init(3)"></i> 4. Testing Agile, Scrum, Kanban y Manifiesto</button>
+                <button class="topic-btn" onclick="init(4)"></i> 5. Atributos de Calidad (ISO 25010) y Necesidad de las
+                    Pruebas</button>
+                <button class="topic-btn" onclick="init(5)"></i> 6. Cuadrantes del Testing Agile</button>
+                <button class="topic-btn" onclick="init(6)"></i> 7. Historias de usuario</button>
+                <button class="topic-btn" onclick="init(7)">8. Metodologías y Ciclo de Vida del Desarrollo de Software (SDLC)</button>
                 <button class="topic-btn leaderboard-btn" onclick="showLeaderboard()">
                     📊 Ver Leaderboard
                 </button>
@@ -377,108 +379,1033 @@
 
         const dbFull = [
             {
-                t: "V&V, Testing y Riesgos",
-                qs: [
-                    { q: "Según el texto, ¿cuál de las siguientes afirmaciones sobre la Verificación es INCORRECTA?", a: ["Se realiza durante todo el desarrollo", "Responde a: ¿Estamos construyendo el producto correctamente?", "Se enfoca en si el usuario necesitaba un neumático", "Controla que el producto represente su especificación inicial"], c: 2, e: "Descubrir que el usuario necesitaba un neumático es parte de la Validación, no de la Verificación." },
-                    { q: "¿Qué es el testing según la definición dinámica del texto?", a: ["Revisar documentos sin ejecutar", "Comprobar dinámicamente que el sistema cumple requerimientos", "Planificar los plazos del proyecto", "Garantizar la ausencia total de errores"], c: 1, e: "El testing implica ejecución para verificar el cumplimiento de historias de usuario." },
-                    { q: "James Bach define el testing como el proceso de comparar:", a: ["Lo visible (código) con lo exacto (plano)", "Lo invisible (código) con lo ambiguo (especificaciones)", "Lo dinámico con lo estático", "El presupuesto con el tiempo"], c: 1, e: "Bach utiliza 'invisible' para el código y 'ambiguo' para las especificaciones." },
-                    { q: "Según Dijkstra, el testing es una forma adecuada de:", a: ["Mostrar la ausencia de errores", "Garantizar la perfección del código", "Mostrar la presencia de errores", "Eliminar la incertidumbre"], c: 2, e: "Dijkstra afirma que el testing muestra que hay errores, pero no puede probar que no existan más." },
-                    { q: "Un riesgo se define técnicamente como:", a: ["Un error ya ocurrido en producción", "Un evento cierto que afecta al costo", "Un evento incierto con probabilidad e impacto", "La renuncia confirmada de un programador"], c: 2, e: "El riesgo es incierto por definición; si ya ocurrió o es seguro, deja de ser un riesgo." },
-                    { q: "Si un riesgo afecta directamente a la calidad o el desempeño, es un riesgo de:", a: ["Negocio", "Proyecto", "Producto", "Externo"], c: 2, e: "Los riesgos de Producto son los que impactan específicamente en la calidad y el desempeño del software." },
-                    { q: "Los riesgos 'Externos' se caracterizan por ser:", a: ["Afectaciones a los plazos", "Ajenos a la organización", "Errores en el código fuente", "Falta de capacitación interna"], c: 1, e: "El texto define los riesgos externos como aquellos que están fuera del control de la organización." },
-                    { q: "En el ejemplo del columpio, la Verificación consiste en:", a: ["Preguntar al cliente si se divierte", "Comprobar la tabla y cuerdas según el plano técnico", "Cambiar la tabla por un neumático", "Analizar el impacto en el negocio"], c: 1, e: "Verificar es seguir el plano técnico; validar es entender qué hace feliz al usuario." },
-                    { q: "¿Cuál es un objetivo de la Validación según el texto?", a: ["Construir el producto correctamente", "Satisfacer requerimientos y necesidades del cliente", "Comparar lo invisible con lo ambiguo", "Controlar los plazos del proyecto"], c: 1, e: "La validación busca que el producto satisfaga las necesidades reales y responda a: ¿Estamos construyendo el producto correcto?" },
-                    { q: "Un riesgo que afecta a la organización se clasifica como:", a: ["Riesgo de Producto", "Riesgo de Negocio", "Riesgo de Proyecto", "Riesgo Incierto"], c: 1, e: "El texto vincula directamente los riesgos de Negocio con la afectación a la organización." }
+                "t": "Verificación y Validación (V&V)",
+                "qs": [
+                    {
+                        "q": "¿A qué proceso nos referimos cuando comprobamos que el software se ajusta a los planos técnicos y estándares de codificación?",
+                        "a": [
+                            "Validación",
+                            "Verificación",
+                            "Despliegue",
+                            "Análisis de mercado"
+                        ],
+                        "c": 1,
+                        "e": "La verificación se centra en el 'cómo', asegurando que el desarrollo siga las especificaciones técnicas (planos)."
+                    },
+                    {
+                        "q": "Sobre la Validación, ¿cuál de las siguientes afirmaciones es INCORRECTA?",
+                        "a": [
+                            "Responde a la pregunta: ¿Estamos construyendo el producto correcto?",
+                            "Se enfoca en que el producto satisfaga las historias de usuario.",
+                            "Su objetivo principal es confirmar que el producto coincide con la especificación técnica inicial.",
+                            "Debe realizarse lo más temprano posible."
+                        ],
+                        "c": 2,
+                        "e": "Confirmar la coincidencia con la especificación técnica es Verificación. La Validación se enfoca en la necesidad del cliente."
+                    },
+                    {
+                        "q": "En el ejemplo del columpio, si se construye un neumático (necesidad real) pero el plano decía tabla y cuerdas, ¿qué ha ocurrido?",
+                        "a": [
+                            "El producto está verificado pero no validado.",
+                            "El producto está validado pero no verificado.",
+                            "El producto no está ni verificado ni validado.",
+                            "El producto es técnicamente perfecto según el diseño."
+                        ],
+                        "c": 1,
+                        "e": "Está validado porque cumple la necesidad del usuario, pero no verificado porque ignoró el plano original."
+                    },
+                    {
+                        "q": "Las historias de usuario son la herramienta principal para:",
+                        "a": [
+                            "La Validación",
+                            "La Verificación",
+                            "La arquitectura del servidor",
+                            "El mantenimiento de hardware"
+                        ],
+                        "c": 0,
+                        "e": "Las historias de usuario definen el 'qué' necesita el cliente, que es la base para validar el producto final."
+                    },
+                    {
+                        "q": "Identifica la relación ERRÓNEA entre concepto y pregunta clave:",
+                        "a": [
+                            "Verificación -> ¿Estamos construyendo el producto correctamente?",
+                            "Validación -> ¿Estamos construyendo el producto correcto?",
+                            "Verificación -> ¿Es esto lo que el cliente realmente quería?",
+                            "Validación -> ¿Se cumplen las expectativas del usuario final?"
+                        ],
+                        "c": 2,
+                        "e": "Preguntar si es lo que el cliente quería es parte de la Validación, no de la Verificación."
+                    },
+                    {
+                        "q": "¿Qué característica técnica diferencia al Testing de una revisión estática según el texto?",
+                        "a": [
+                            "Que el testing no requiere de historias de usuario.",
+                            "Su naturaleza dinámica, que implica la ejecución real del código.",
+                            "Que el testing solo se realiza al final del proyecto.",
+                            "Que es un proceso finito con pasos determinados."
+                        ],
+                        "c": 1,
+                        "e": "El testing se define como un proceso dinámico, lo que significa que el código debe estar en ejecución para ser comprobado."
+                    },
+                    {
+                        "q": "Según la definición de Dijkstra, si una batería de pruebas pasa al 100% sin errores, ¿qué podemos concluir?",
+                        "a": [
+                            "Que el sistema es perfecto y no tiene fallos.",
+                            "Que se ha demostrado la ausencia total de errores.",
+                            "Que hemos encontrado errores pero el testing ya no es efectivo.",
+                            "Que no se han encontrado errores en esas pruebas, pero no garantiza que no existan otros."
+                        ],
+                        "c": 3,
+                        "e": "Dijkstra afirma que el testing muestra la presencia de errores, pero nunca puede certificar la ausencia de los mismos."
+                    },
+                    {
+                        "q": "Si un cambio inesperado en el mercado obliga a la empresa a cambiar su estrategia, ¿ante qué tipo de riesgo estamos?",
+                        "a": [
+                            "Riesgo de Producto",
+                            "Riesgo de Negocio",
+                            "Riesgo de Proyecto",
+                            "Riesgo Técnico"
+                        ],
+                        "c": 1,
+                        "e": "Los riesgos de Negocio son aquellos que afectan directamente a la organización y su viabilidad o estrategia."
+                    },
+                    {
+                        "q": "Un riesgo se define por dos componentes fundamentales, ¿cuáles son?",
+                        "a": [
+                            "Código e Historias de Usuario.",
+                            "Costo y Tiempo de desarrollo.",
+                            "Probabilidad de ocurrencia e impacto.",
+                            "Visibilidad y Ambigüedad."
+                        ],
+                        "c": 2,
+                        "e": "Todo riesgo se mide por qué tan probable es que suceda y qué tanto afectará (impacto) a los objetivos si ocurre."
+                    },
+                    {
+                        "q": "En la frase de James Bach, ¿a qué se refiere con comparar 'lo invisible' con 'lo ambiguo'?",
+                        "a": [
+                            "A comparar el código fuente con las especificaciones o requerimientos.",
+                            "A comparar el diseño visual con la base de datos.",
+                            "A la relación entre los riesgos externos y los de producto.",
+                            "A la diferencia entre la verificación y la validación técnica."
+                        ],
+                        "c": 0,
+                        "e": "El código es 'invisible' para el usuario/cliente y las especificaciones suelen ser 'ambiguas' (sujetas a interpretación), lo que hace complejo el testing."
+                    }
                 ]
             },
             {
-                t: "Gestión de Calidad (QA/QC/QM)",
-                qs: [
-                    { q: "QA (Aseguramiento) es un proceso:", a: ["Correctivo", "Orientado al producto", "Preventivo y orientado al proceso", "Basado solo en ejecución"], c: 2, e: "QA busca mejorar procesos para evitar que aparezcan defectos." },
-                    { q: "QC (Control) se enfoca en:", a: ["La mejora de procesos", "El producto final y detección de fallas", "La formación", "La definición de estándares"], c: 1, e: "QC es la parte operativa que mide la calidad del software terminado." },
-                    { q: "Quality Management (QM) integra:", a: ["QA y QC", "Solo testing", "Programación", "Gestión de hardware"], c: 0, e: "QM es el marco global que coordina tanto prevención como detección." },
-                    { q: "Un objetivo clave de QA es:", a: ["Encontrar más bugs", "Brindar confianza en el cumplimiento de requisitos", "Corregir código", "Pruebas de carga"], c: 1, e: "QA proporciona evidencia de que el proceso es capaz de generar calidad." },
-                    { q: "QC es una actividad de tipo:", a: ["Proactiva", "Reactiva", "Administrativa", "Organizacional"], c: 1, e: "Es reactiva porque actúa sobre el producto ya creado." },
-                    { q: "La calidad ISO depende de:", a: ["Costo", "Cumplimiento de requisitos implícitos y explícitos", "Velocidad", "Lenguaje"], c: 1, e: "Calidad es el grado en que características cumplen requisitos." },
-                    { q: "QA bien implementado reduce:", a: ["Sueldos", "Costo de retrabajo (rework)", "Comunicación", "Historias"], c: 1, e: "Prevenir errores gasta menos que corregirlos tarde." },
-                    { q: "¿Quién es el principal responsable de QC?", a: ["Gerente de Proyecto", "Equipo de Testing", "El cliente", "RRHH"], c: 1, e: "Los testers ejecutan las pruebas que validan el producto final." },
-                    { q: "La auditoría de calidad es una herramienta de:", a: ["QC", "QA", "Desarrollo", "Ventas"], c: 1, e: "Las auditorías verifican que se sigan los procesos definidos." },
-                    { q: "En Agile, la calidad es responsabilidad de:", a: ["Solo el tester", "Scrum Master", "Todo el equipo", "Product Owner"], c: 2, e: "Es un compromiso transversal de todo el equipo multidisciplinario." }
+                "t": "Calidad de Software y Testing",
+                "qs": [
+                    {
+                        "q": "Según la definición de la RAE, si comparamos un Ferrari con un Hummer, ¿cuál tiene más calidad?",
+                        "a": [
+                            "El Ferrari, por ser un objeto de lujo superior.",
+                            "El Hummer, por su resistencia y durabilidad.",
+                            "Ninguno necesariamente, ya que la RAE solo plantea la calidad como un atributo para comparar, no como una escala de valor absoluto.",
+                            "Aquel que cumpla con los requisitos técnicos de la ISO 9000."
+                        ],
+                        "c": 2,
+                        "e": "La RAE define calidad como propiedades que permiten apreciar algo como igual, mejor o peor, pero no establece de antemano qué objeto es superior sin un criterio de comparación."
+                    },
+                    {
+                        "q": "Bajo la óptica de la ISO 9000, la calidad se define principalmente como:",
+                        "a": [
+                            "La ausencia total de errores en el código fuente.",
+                            "El grado en que un conjunto de características inherentes cumple con los requisitos.",
+                            "La opinión subjetiva del usuario final sobre el producto.",
+                            "El uso de los estándares de codificación más modernos del mercado."
+                        ],
+                        "c": 1,
+                        "e": "ISO 9000 vincula la calidad directamente al cumplimiento de requisitos preestablecidos, ya sean funcionales o técnicos."
+                    },
+                    {
+                        "q": "¿Cuál es la relación CORRECTA entre el Testing y la Calidad de Software según el texto?",
+                        "a": [
+                            "Hacer testing es equivalente a garantizar calidad total.",
+                            "El testing es una actividad que 'fabrica' calidad durante el desarrollo.",
+                            "El testing contribuye a la calidad proporcionando información objetiva sobre el sistema.",
+                            "La calidad es una métrica que solo se puede medir si no se hace testing."
+                        ],
+                        "c": 2,
+                        "e": "El testing no es calidad en sí mismo; es una herramienta de control y medición que aporta datos objetivos para que los interesados tomen decisiones sobre la calidad."
+                    },
+                    {
+                        "q": "Se afirma que la calidad es 'subjetiva, contextual y sistemática'. ¿Cuál de estas opciones contradice esta idea?",
+                        "a": [
+                            "Un software puede ser de alta calidad para un usuario y de baja calidad para otro.",
+                            "La calidad de un sistema depende del entorno y los requisitos específicos en un momento dado.",
+                            "La calidad se puede medir de forma universal y fija para todos los tipos de software existentes.",
+                            "La calidad es el resultado de la interacción de múltiples componentes del sistema."
+                        ],
+                        "c": 2,
+                        "e": "Decir que es universal y fija es incorrecto, ya que la calidad depende totalmente del contexto (no es lo mismo un software médico que un videojuego)."
+                    },
+                    {
+                        "q": "Sobre la afirmación 'Algo de calidad va a depender del contexto', ¿cuál de las siguientes opciones es INCORRECTA?",
+                        "a": [
+                            "Las historias de usuario son fundamentales para determinar la calidad esperada.",
+                            "Los requerimientos técnicos son el único factor que determina si un producto tiene calidad.",
+                            "La percepción de calidad puede cambiar si cambian las necesidades del negocio.",
+                            "El contexto operacional define qué atributos (velocidad, seguridad, etc.) son prioritarios."
+                        ],
+                        "c": 1,
+                        "e": "Es incorrecta porque la calidad no depende solo de lo técnico; también depende de las historias funcionales, el contexto y el cumplimiento de las expectativas del cliente."
+                    },
+                    {
+                        "q": "Si una empresa decide implementar una nueva política de gobernanza y liderazgo para estandarizar la calidad en todos sus departamentos, ¿en qué nivel del modelo está actuando?",
+                        "a": [
+                            "Quality Control (QC)",
+                            "Quality Assurance (QA)",
+                            "Quality Management (QM)",
+                            "Quality Planning (QP)"
+                        ],
+                        "c": 2,
+                        "e": "El Quality Management (QM) tiene un enfoque organizacional y se encarga de la dirección, política y gobernanza global de la calidad."
+                    },
+                    {
+                        "q": "¿Cuál es la principal diferencia de enfoque entre el Quality Assurance (QA) y el Quality Control (QC)?",
+                        "a": [
+                            "El QA se enfoca en el producto final y el QC en la planificación inicial.",
+                            "El QA se enfoca en los procesos para prevenir errores, mientras que el QC se enfoca en el producto para detectar defectos.",
+                            "El QA realiza las pruebas (testing) y el QC realiza las auditorías.",
+                            "No hay diferencia, ambos términos son sinónimos en la gestión de calidad."
+                        ],
+                        "c": 1,
+                        "e": "El QA es preventivo (procesos) y el QC es detectivo (producto/inspección)."
+                    },
+                    {
+                        "q": "Un equipo está realizando un 'Benchmarking' para definir las métricas que se usarán en el próximo trimestre. Según el texto, esta actividad pertenece a:",
+                        "a": [
+                            "Quality Improvement (QI)",
+                            "Quality Planning (QP)",
+                            "Quality Control (QC)",
+                            "Auditoría de Procesos"
+                        ],
+                        "c": 1,
+                        "e": "El Quality Planning (QP) se centra en la planificación, definición de objetivos, métricas y benchmarking."
+                    },
+                    {
+                        "q": "Sobre la relación entre el Testing y el Quality Control (QC), ¿cuál de las siguientes afirmaciones es CORRECTA?",
+                        "a": [
+                            "El Testing es la única actividad válida dentro del QC.",
+                            "El Testing pertenece al nivel de QA porque busca prevenir errores.",
+                            "El Testing es una de las tantas actividades operativas dentro del QC, junto a revisiones e inspecciones.",
+                            "El Testing es parte del QM porque dirige la organización."
+                        ],
+                        "c": 2,
+                        "e": "El QC abarca técnicas operativas de detección; el testing es una de ellas, pero también existen los walkthroughs e inspecciones."
+                    },
+                    {
+                        "q": "Identifica la opción INCORRECTA respecto al Quality Improvement (QI):",
+                        "a": [
+                            "Su objetivo es aumentar la efectividad y eficiencia de los procesos.",
+                            "Se basa en esfuerzos continuos y ciclos de retroalimentación (feedback loops).",
+                            "Su meta es simplemente cumplir con los estándares actuales sin superarlos.",
+                            "Busca generar mayor valor optimizando lo que ya existe."
+                        ],
+                        "c": 2,
+                        "e": "Es incorrecta porque el QI busca superar los estándares existentes y la mejora continua, no solo conformarse con el cumplimiento básico."
+                    }
                 ]
             },
             {
-                t: "Historias e INVEST",
-                qs: [
-                    { q: "En INVEST, la 'I' significa:", a: ["Incremental", "Independiente", "Integral", "Inmediato"], c: 1, e: "Deben poder desarrollarse sin depender estrictamente de otras." },
-                    { q: "La 'N' de INVEST se refiere a:", a: ["No técnica", "Negociable", "Necesaria", "Nominal"], c: 1, e: "Es una invitación a la conversación, no un contrato cerrado." },
-                    { q: "Valuable (V) en INVEST significa:", a: ["Costosa", "Aporte valor al negocio", "Fácil de vender", "Muchos puntos"], c: 1, e: "Si no aporta valor claro, no debería estar en el backlog." },
-                    { q: "Estimable (E) implica que:", a: ["El cliente sabe el precio", "El equipo puede dimensionar el esfuerzo", "Es infinita", "No se mide"], c: 1, e: "El equipo debe entenderla para asignarle complejidad." },
-                    { q: "Small (S) sugiere que una historia debe:", a: ["Ocupar una línea", "Poder completarse en un sprint", "Ser corta", "Tener pocos caracteres"], c: 1, e: "Si es muy grande (Epic), debe dividirse." },
-                    { q: "Testable (T) es fundamental para:", a: ["Velocidad", "Verificar cumplimiento de criterios de aceptación", "Escribir código", "Ahorrar"], c: 1, e: "Si no se puede probar, no podemos saber si está Done." },
-                    { q: "Las 3 'C' son:", a: ["Costo/Calidad/Cant", "Card/Conversation/Confirmation", "Código/Cliente/Ctrl", "Calidad/Criterio"], c: 1, e: "Soporte físico, diálogo y validación final." },
-                    { q: "El Criterio de Aceptación define:", a: ["Salario", "Condiciones para dar por terminada una historia", "Nombre App", "DB"], c: 1, e: "Reglas específicas que el software debe cumplir para ser aceptado." },
-                    { q: "Un 'Epic' es:", a: ["Historia buena", "Historia demasiado grande que debe descomponerse", "Bug", "Reunión"], c: 1, e: "Funcionalidad que requiere múltiples historias menores." },
-                    { q: "Planning Poker sirve para:", a: ["Jugar", "Estimar esfuerzo por consenso", "Asignar tareas", "Criticar"], c: 1, e: "Ayuda a dimensionar historias basándose en la visión de todo el equipo." }
+                "t": "Modelos de Calidad o de Excelencia, Testing vs Debugging",
+                "qs": [
+                    {
+                        "q": "¿Cuál es la naturaleza de la implementación de los modelos de excelencia en una organización?",
+                        "a": [
+                            "Son impuestos por leyes gubernamentales.",
+                            "Son de carácter obligatorio para cualquier empresa.",
+                            "Su adopción es voluntaria, sirviendo como un marco de referencia.",
+                            "Son requisitos exclusivos para empresas de software."
+                        ],
+                        "c": 2,
+                        "e": "El texto indica que son un marco de referencia, lo que implica que la organización decide seguirlos para mejorar, no por una imposición legal externa."
+                    },
+                    {
+                        "q": "Sobre la adaptabilidad de estos modelos, ¿qué se puede afirmar?",
+                        "a": [
+                            "Solo pueden aplicarse en grandes corporaciones tecnológicas.",
+                            "Están diseñados para adaptarse a cualquier tipo de empresa.",
+                            "Solo funcionan en empresas que ya tienen una certificación ISO.",
+                            "No son adaptables, la empresa debe cambiar totalmente su estructura para usarlos."
+                        ],
+                        "c": 1,
+                        "e": "Una de las características principales de estos modelos es su versatilidad para ser aplicados en distintos sectores y tamaños de organizaciones."
+                    },
+                    {
+                        "q": "Respecto a la evaluación de estos modelos, ¿cuál es la afirmación CORRECTA?",
+                        "a": [
+                            "Requieren obligatoriamente un auditor externo cada mes.",
+                            "Son autoevaluables por la propia organización.",
+                            "No permiten ningún tipo de medición interna.",
+                            "Solo la RAE puede evaluar si se están cumpliendo."
+                        ],
+                        "c": 1,
+                        "e": "Los modelos de excelencia permiten que la propia empresa analice su desempeño y madurez sin depender estrictamente de un tercero."
+                    },
+                    {
+                        "q": "¿Qué sucede con la certificación en los modelos de excelencia según el texto?",
+                        "a": [
+                            "Se obtiene un diploma internacional de cumplimiento.",
+                            "Son equivalentes a una certificación ISO 9000.",
+                            "No son certificables.",
+                            "Al terminar la autoevaluación, se recibe una certificación obligatoria."
+                        ],
+                        "c": 2,
+                        "e": "A diferencia de las normas ISO, los modelos de excelencia se enfocan en la gestión y mejora, pero no emiten un certificado de cumplimiento formal."
+                    },
+                    {
+                        "q": "Identifica la afirmación INCORRECTA sobre los modelos de calidad o excelencia:",
+                        "a": [
+                            "Funcionan como una guía o marco de trabajo.",
+                            "Una pequeña startup puede utilizarlos para mejorar sus procesos.",
+                            "Es obligatorio que todas las empresas los utilicen para poder operar.",
+                            "La empresa puede medir su propio progreso mediante la autoevaluación."
+                        ],
+                        "c": 2,
+                        "e": "Es incorrecta porque estos modelos no son obligatorios; son herramientas opcionales para buscar la mejora continua."
+                    },
+                    {
+                        "q": "¿Quién es el responsable principal de realizar el proceso de Debugging según el texto?",
+                        "a": [
+                            "El equipo de Testing (QA).",
+                            "El usuario final durante la validación.",
+                            "El desarrollador (Developer).",
+                            "El Product Owner."
+                        ],
+                        "c": 2,
+                        "e": "El texto es explícito al mencionar que la depuración es una actividad realizada por el desarrollo, no por el equipo de testing."
+                    },
+                    {
+                        "q": "¿Cuál es la función principal de un 'breakpoint' en el proceso de depuración?",
+                        "a": [
+                            "Eliminar automáticamente el código defectuoso.",
+                            "Detener el flujo del programa en un lugar específico para observar su comportamiento.",
+                            "Acelerar la ejecución del software para encontrar errores de rendimiento.",
+                            "Enviar un reporte de error al equipo de QA."
+                        ],
+                        "c": 1,
+                        "e": "Los puntos de interrupción o breakpoints permiten una ejecución controlada, deteniendo el programa para que el desarrollador vea qué ocurre paso a paso."
+                    },
+                    {
+                        "q": "Identifica la diferencia técnica CORRECTA entre Testing y Debugging:",
+                        "a": [
+                            "El Testing corrige el código y el Debugging solo lo observa.",
+                            "El Testing detecta la existencia de defectos; el Debugging localiza la causa y los corrige.",
+                            "El Testing lo hace el desarrollador y el Debugging el QA.",
+                            "No hay diferencia, ambos términos se refieren a la ejecución de pruebas unitarias."
+                        ],
+                        "c": 1,
+                        "e": "El Testing se encarga de la detección (encontrar que algo falla), mientras que el Debugging es la fase de diagnóstico y reparación (entender por qué falla y arreglarlo)."
+                    },
+                    {
+                        "q": "¿Qué tipo de ejecución se requiere para llevar a cabo el Debugging?",
+                        "a": [
+                            "Una ejecución aleatoria y masiva de datos.",
+                            "Una ejecución estática sin necesidad de correr el programa.",
+                            "Una ejecución controlada del programa.",
+                            "Una ejecución realizada únicamente en el entorno de producción."
+                        ],
+                        "c": 2,
+                        "e": "Para depurar, se necesita ejecutar el código de forma controlada para poder observar variables y estados en momentos específicos."
+                    },
+                    {
+                        "q": "Sobre el proceso de Debugging, ¿cuál de las siguientes afirmaciones es INCORRECTA?",
+                        "a": [
+                            "Es un proceso para identificar y eliminar defectos en el código.",
+                            "Es una tarea que debe realizar el equipo de Testing para asegurar la calidad.",
+                            "Permite observar el cumplimiento del código paso a paso.",
+                            "Se apoya en herramientas específicas para analizar el flujo del programa."
+                        ],
+                        "c": 1,
+                        "e": "Es incorrecta porque el texto aclara que el Debugging NO lo realiza el equipo de testing, sino el área de desarrollo."
+                    }
                 ]
             },
             {
-                t: "Manifiesto Ágil (Revisado)",
-                qs: [
-                    { q: "Se valoran los individuos e interacciones por encima de:", a: ["Planes de trabajo", "Procesos y herramientas", "Arquitectura técnica", "Gestión de riesgos"], c: 1, e: "El factor humano y la comunicación directa son el motor fundamental de la agilidad." },
-                    { q: "¿Cuál de estas afirmaciones sobre el software funcionando es INCORRECTA?", a: ["Es la medida principal de progreso", "Se prefiere a la documentación", "Debe entregarse cada 6 meses", "Aporta valor real al cliente"], c: 2, e: "El manifiesto sugiere ciclos cortos (semanas o meses), 6 meses se considera un periodo muy largo." },
-                    { q: "La colaboración con el cliente se prioriza por encima de:", a: ["La negociación contractual", "El análisis de requerimientos", "Las reuniones de estatus", "La validación de calidad"], c: 0, e: "Se busca una sociedad con el cliente en lugar de una relación basada solo en el cumplimiento legal." },
-                    { q: "La respuesta ante el cambio se valora más que:", a: ["El cumplimiento de plazos", "Seguir un plan establecido", "La estabilidad del equipo", "La reducción de costos"], c: 1, e: "La capacidad de pivotar es vital para mantener la ventaja competitiva en mercados volátiles." },
-                    { q: "La mayor prioridad es satisfacer al cliente mediante:", a: ["Informes de avance", "Entrega temprana de valor", "Alcance total inicial", "Optimización de costos"], c: 1, e: "Entregar software útil de forma frecuente es el corazón del éxito ágil." },
-                    { q: "Respecto a los cambios en los requisitos, la agilidad propone:", a: ["Evitarlos tras el diseño", "Aceptarlos bajo multa", "Darles la bienvenida siempre", "Posponerlos para el final"], c: 2, e: "Aprovechar el cambio, incluso al final del desarrollo, beneficia la competitividad del cliente." },
-                    { q: "El intervalo de entrega preferido para el software es:", a: ["Cada 15 días exactos", "De semanas a un par de meses", "Al finalizar cada trimestre", "Según la carga del equipo"], c: 1, e: "Ciclos cortos permiten obtener feedback rápido y reducir el riesgo de desviaciones." },
-                    { q: "El método más eficiente para comunicar información es:", a: ["Tableros de gestión", "Conversación cara a cara", "Documentación detallada", "Hilos de correos"], c: 1, e: "La comunicación directa reduce malentendidos y aumenta la velocidad de resolución." },
-                    { q: "La excelencia técnica y el buen diseño son considerados:", a: ["Factores que mejoran la agilidad", "Tareas secundarias tras entrega", "Responsabilidad del líder", "Carga que retrasa la salida"], c: 0, e: "Un código limpio y bien diseñado permite realizar cambios más rápido en el futuro." },
-                    { q: "¿De dónde emergen las mejores arquitecturas y diseños?", a: ["De comités de expertos", "De equipos auto-organizados", "Del Project Manager", "De manuales corporativos"], c: 1, e: "La autonomía del equipo fomenta soluciones más innovadoras y ajustadas a la realidad." }
+                "t": "Testing Agile, Scrum, Kanban y Manifiesto",
+                "qs": [
+                    {
+                        "q": "¿Cuál es la posición estratégica del Tester Agile según el texto?",
+                        "a": [
+                            "Se ubica exclusivamente en el área de negocios para definir contratos.",
+                            "Está entre el negocio (requisitos) y los desarrolladores (complejidad técnica).",
+                            "Trabaja de forma aislada al final del proyecto para asegurar la rigidez.",
+                            "Su única función es traducir los manuales de usuario a los desarrolladores."
+                        ],
+                        "c": 1,
+                        "e": "El tester agile actúa como puente, entendiendo tanto la necesidad del negocio como la viabilidad técnica de la solución."
+                    },
+                    {
+                        "q": "En el marco de SCRUM, ¿qué define fundamentalmente al 'Sprint'?",
+                        "a": [
+                            "Un tablero visual donde se limitan las tareas activas.",
+                            "Un evento de tiempo fijo, usualmente de 1 a 4 semanas, para crear consistencia.",
+                            "Una reunión diaria para hablar con el cliente sobre el contrato.",
+                            "Un proceso de documentación extensiva antes de empezar a programar."
+                        ],
+                        "c": 1,
+                        "e": "El Sprint es el 'corazón' de Scrum y se caracteriza por ser un bloque de tiempo fijo y corto para la entrega de valor."
+                    },
+                    {
+                        "q": "¿Cuál es el objetivo principal de limitar la cantidad de tareas activas (WIP) en KANBAN?",
+                        "a": [
+                            "Aumentar la cantidad de documentación técnica.",
+                            "Evitar la sobrecarga del equipo y permitir que el trabajo fluya.",
+                            "Eliminar la necesidad de tener un Product Owner.",
+                            "Asegurar que el sprint dure exactamente 4 semanas."
+                        ],
+                        "c": 1,
+                        "e": "Kanban busca el equilibrio y la claridad, evitando que el equipo se sature mediante la limitación del trabajo en curso."
+                    },
+                    {
+                        "q": "Según el Manifiesto Agile, ¿qué se valora más que la documentación extensiva?",
+                        "a": [
+                            "Los procesos y las herramientas de automatización.",
+                            "El software funcionando.",
+                            "El seguimiento estricto de un plan inicial.",
+                            "La negociación contractual detallada."
+                        ],
+                        "c": 1,
+                        "e": "Aunque la documentación es útil, el agilismo prioriza que el software sea funcional y entregue valor real."
+                    },
+                    {
+                        "q": "El principio de 'Conversación cara a cara' en Agile se considera:",
+                        "a": [
+                            "El método más eficaz para comunicar información.",
+                            "Una pérdida de tiempo que debería reemplazarse por correos electrónicos.",
+                            "Algo opcional que solo se hace al final del proyecto.",
+                            "Un requisito exclusivo de la metodología Kanban."
+                        ],
+                        "c": 0,
+                        "e": "Agile promueve la comunicación directa entre los individuos para reducir malentendidos y aumentar la velocidad."
+                    },
+                    {
+                        "q": "En el Testing Agile, ¿cuál es el cambio de mentalidad respecto a los errores (bugs)?",
+                        "a": [
+                            "El objetivo es encontrar la mayor cantidad de errores al final.",
+                            "Priorizar la prevención de bugs por sobre solo encontrarlos.",
+                            "Ignorar los bugs pequeños para cumplir con el plan.",
+                            "Responsabilizar únicamente al desarrollador por la aparición de bugs."
+                        ],
+                        "c": 1,
+                        "e": "El enfoque moderno busca integrar la calidad desde el inicio para evitar que los defectos se produzcan, en lugar de solo detectarlos tarde."
+                    },
+                    {
+                        "q": "¿Quién es el responsable de la calidad en un equipo Agile?",
+                        "a": [
+                            "Únicamente el Tester.",
+                            "El Scrum Master exclusivamente.",
+                            "Todo el equipo es responsable de la calidad.",
+                            "El cliente, al recibir el producto."
+                        ],
+                        "c": 2,
+                        "e": "El manifiesto de testing agile traslada la responsabilidad de la calidad del individuo (tester) a todo el equipo multidisciplinario."
+                    },
+                    {
+                        "q": "De acuerdo con los 12 principios, ¿qué medida es la principal para notar el progreso de un proyecto?",
+                        "a": [
+                            "El número de horas trabajadas por el equipo.",
+                            "La cantidad de documentos de diseño aprobados.",
+                            "El software en funcionamiento.",
+                            "El cumplimiento total del presupuesto inicial."
+                        ],
+                        "c": 2,
+                        "e": "No importa cuánto se haya planificado; el progreso real en Agile se mide por software que realmente funciona."
+                    },
+                    {
+                        "q": "Identifica la opción INCORRECTA sobre el Manifiesto para el Testing Agile:",
+                        "a": [
+                            "Se prefiere testear durante el proceso en lugar de al final.",
+                            "Se busca construir el mejor sistema antes que intentar 'romperlo'.",
+                            "Es más importante verificar funcionalidades que entender qué se testea.",
+                            "La prevención es clave."
+                        ],
+                        "c": 2,
+                        "e": "Es incorrecta porque el manifiesto dice que es preferible 'Entender lo que se está testeando' por sobre la simple verificación mecánica de funciones."
+                    },
+                    {
+                        "q": "¿Qué significa que los equipos ágiles deban ser 'auto-organizados'?",
+                        "a": [
+                            "Que no necesitan seguir ninguna regla ni metodología.",
+                            "Que generan mejores arquitecturas y diseños al tener autonomía y responsabilidad.",
+                            "Que cada miembro trabaja por su cuenta sin hablar con los demás.",
+                            "Que el Product Owner decide todas las tareas técnicas diariamente."
+                        ],
+                        "c": 1,
+                        "e": "La auto-organización permite que las personas más cercanas al trabajo técnico tomen las mejores decisiones para el producto."
+                    }
                 ]
             },
             {
-                t: "Cuadrantes y Niveles",
-                qs: [
-                    { q: "Cuadrante 1 (Q1) se enfoca en:", a: ["Usuario", "Tecnología/Equipo (Unitarias)", "Seguridad", "Manuales"], c: 1, e: "Base técnica, automatizada y enfocada en el código." },
-                    { q: "Cuadrante 2 (Q2) busca:", a: ["Atacar sistema", "Apoyar al negocio (Historias)", "Rendimiento", "Estrés"], c: 1, e: "Verifica que se cumplan los requisitos de negocio." },
-                    { q: "Regresión se ubica principalmente en:", a: ["Q1 y Q2", "Q4", "Solo Q3", "Fuera"], c: 0, e: "Aseguran que lo que funcionaba no se rompió." },
-                    { q: "Cuadrante 3 (Q3) es:", a: ["Automatizado", "Manual/Crítica (Exploratorio/Usabilidad)", "DB", "Carga"], c: 1, e: "Uso de intuición y experiencia humana para hallar fallas." },
-                    { q: "Cuadrante 4 (Q4) se dedica a:", a: ["Unitarias", "Tecnología/Crítica (Perf/Seguridad)", "Humo", "Historias"], c: 1, e: "Atributos no funcionales con herramientas especializadas." },
-                    { q: "Pruebas Unitarias buscan fallas en:", a: ["Integración", "Módulos individuales", "Sistema", "Red"], c: 1, e: "Testeo de unidad mínima aislada." },
-                    { q: "Integración verifica:", a: ["UI", "Comunicación entre componentes", "Hardware", "Ortografía"], c: 1, e: "Aseguran que módulos trabajen bien juntos." },
-                    { q: "Pruebas de Sistema evalúan:", a: ["Código", "Producto completo integrado", "DB aislada", "Contrato"], c: 1, e: "Visión end-to-end del software funcional." },
-                    { q: "UAT es realizado por:", a: ["Dev", "Usuario final/Cliente", "Scrum Master", "Robot"], c: 1, e: "Valida aptitud para uso en mundo real." },
-                    { q: "Pruebas de Humo (Smoke) sirven para:", a: ["Incendios", "Verificar funciones básicas operativas", "Temp", "Seguridad"], c: 1, e: "Decidir si vale la pena seguir testeando una versión." }
+                "t": "Atributos de Calidad (ISO 25010) y Necesidad de las Pruebas",
+                "qs": [
+                    {
+                        "q": "¿Cuál es la diferencia fundamental entre los atributos funcionales y los no funcionales?",
+                        "a": [
+                            "Los funcionales se refieren a qué hace el sistema y los no funcionales a cómo lo hace.",
+                            "Los funcionales solo los ve el desarrollador y los no funcionales el usuario.",
+                            "Los funcionales son opcionales y los no funcionales son obligatorios por ley.",
+                            "No existe diferencia, ambos términos se refieren a la velocidad del sistema."
+                        ],
+                        "c": 0,
+                        "e": "La calidad funcional define las tareas que el sistema ejecuta, mientras que la no funcional define características de comportamiento como seguridad, rapidez o facilidad de uso."
+                    },
+                    {
+                        "q": "Si un sistema médico entrega resultados con el nivel de precisión exacto requerido, ¿qué subcaracterística de la Adecuación Funcional está cumpliendo?",
+                        "a": [
+                            "Completitud funcional.",
+                            "Pertinencia funcional.",
+                            "Corrección funcional.",
+                            "Accesibilidad funcional."
+                        ],
+                        "c": 2,
+                        "e": "La corrección funcional se enfoca específicamente en proveer resultados correctos con la precisión necesaria."
+                    },
+                    {
+                        "q": "Un sistema que puede ser utilizado fácilmente por personas con distintas capacidades (por ejemplo, personas con discapacidad visual) destaca en el atributo de:",
+                        "a": [
+                            "Estética.",
+                            "Accesibilidad.",
+                            "Interoperabilidad.",
+                            "Modularidad."
+                        ],
+                        "c": 1,
+                        "e": "La accesibilidad es la subcaracterística de la usabilidad que asegura que el sistema sea utilizable por el mayor rango posible de personas."
+                    },
+                    {
+                        "q": "Bajo el atributo de Fiabilidad, ¿qué significa la 'Tolerancia a fallos'?",
+                        "a": [
+                            "Que el sistema nunca va a fallar bajo ninguna circunstancia.",
+                            "Que el sistema puede seguir funcionando correctamente a pesar de la existencia de errores internos.",
+                            "Que el sistema se puede reinstalar rápidamente después de un error catastrófico.",
+                            "Que el sistema avisa al usuario antes de cerrarse."
+                        ],
+                        "c": 1,
+                        "e": "La tolerancia a fallos permite que el sistema mantenga su nivel de desempeño incluso cuando ocurren anomalías internas."
+                    },
+                    {
+                        "q": "En el contexto de Seguridad, ¿cuál es la diferencia entre Confidencialidad e Integridad?",
+                        "a": [
+                            "La confidencialidad evita accesos no autorizados y la integridad evita alteraciones no autorizadas de los datos.",
+                            "La integridad es para el hardware y la confidencialidad para el software.",
+                            "Son lo mismo, ambos protegen la identidad del usuario.",
+                            "La confidencialidad es rastrear acciones y la integridad es negar que se hicieron."
+                        ],
+                        "c": 0,
+                        "e": "Confidencialidad protege el acceso (quién lo ve) e integridad protege la consistencia (que no se cambie la información)."
+                    },
+                    {
+                        "q": "¿Qué subcaracterística de la Mantenibilidad se refiere a la facilidad para diagnosticar fallos dentro del sistema?",
+                        "a": [
+                            "Modularidad.",
+                            "Reusabilidad.",
+                            "Analizabilidad.",
+                            "Capacidad de ser reemplazado."
+                        ],
+                        "c": 2,
+                        "e": "La analizabilidad es la facilidad con la que se puede entender la causa raíz de un fallo o identificar partes a modificar."
+                    },
+                    {
+                        "q": "Si un software puede trasladarse fácilmente de un servidor Windows a uno Linux, ¿qué atributo de calidad está demostrando principalmente?",
+                        "a": [
+                            "Portabilidad.",
+                            "Coexistencia.",
+                            "Eficiencia de desempeño.",
+                            "Operabilidad."
+                        ],
+                        "c": 0,
+                        "e": "La portabilidad es la capacidad de un software de ser transferido de un entorno o plataforma a otro."
+                    },
+                    {
+                        "q": "En la Eficiencia de Desempeño, el 'Comportamiento temporal' se refiere a:",
+                        "a": [
+                            "Cuánto tiempo dura el software instalado antes de caducar.",
+                            "Los tiempos de respuesta y procesamiento ante ciertas operaciones.",
+                            "La fecha y hora en que se realizan las pruebas.",
+                            "La capacidad de recuperación tras un fallo de energía."
+                        ],
+                        "c": 1,
+                        "e": "El comportamiento temporal mide la rapidez con la que el sistema responde a las entradas del usuario o procesos internos."
+                    },
+                    {
+                        "q": "¿A qué se refiere el término 'No repudio' dentro del atributo de Seguridad?",
+                        "a": [
+                            "A que el sistema no puede rechazar a ningún usuario nuevo.",
+                            "A la imposibilidad de que alguien niegue haber realizado una acción en el sistema.",
+                            "A que el software no tiene errores conocidos.",
+                            "A que el sistema es compatible con versiones anteriores."
+                        ],
+                        "c": 1,
+                        "e": "El no repudio asegura que una entidad no pueda negar un evento o acción que tuvo lugar (como una firma digital o una transacción)."
+                    },
+                    {
+                        "q": "Según el texto, ¿cuál es una de las razones principales por las que aparecen errores en el software?",
+                        "a": [
+                            "Porque las computadoras no entienden el código complejo.",
+                            "Porque es creado por humanos, quienes son propensos a errores.",
+                            "Porque los lenguajes de programación son inherentemente defectuosos.",
+                            "Porque el testing se hace siempre al principio."
+                        ],
+                        "c": 1,
+                        "e": "El factor humano es la causa raíz de los errores en el desarrollo de software, lo que hace necesario el testing."
+                    },
+                    {
+                        "q": "¿Qué impacto tiene la 'presión de entrega' en la calidad del software?",
+                        "a": [
+                            "Mejora la eficiencia porque el equipo trabaja más rápido.",
+                            "No afecta la calidad si el equipo es senior.",
+                            "Provoca que se asuman cosas en lugar de comprobarlas, generando más errores.",
+                            "Reduce los costos de producción al entregar antes."
+                        ],
+                        "c": 2,
+                        "e": "La presión suele llevar a omitir validaciones críticas y a realizar suposiciones erróneas sobre el funcionamiento del código."
+                    },
+                    {
+                        "q": "Desde el punto de vista económico, ¿por qué son necesarias las pruebas?",
+                        "a": [
+                            "Porque los testers necesitan un salario.",
+                            "Porque detectar fallas antes de la producción reduce significativamente los costos.",
+                            "Porque las licencias de software de prueba son gratuitas.",
+                            "Porque el presupuesto del proyecto siempre debe incluir una fase de error."
+                        ],
+                        "c": 1,
+                        "e": "Corregir un error en producción es mucho más costoso que encontrarlo y solucionarlo durante las fases de desarrollo o testing."
+                    },
+                    {
+                        "q": "Identifica la relación ERRÓNEA sobre los conceptos de Compatibilidad:",
+                        "a": [
+                            "Coexistencia -> Estar en contexto con otros sistemas compartiendo recursos.",
+                            "Interoperabilidad -> Facilidad de comunicación con componentes externos.",
+                            "Coexistencia -> Capacidad de un sistema para reemplazar a otro.",
+                            "Interoperabilidad -> Capacidad de intercambiar información entre sistemas."
+                        ],
+                        "c": 2,
+                        "e": "La capacidad de reemplazar un sistema por otro pertenece a la Portabilidad (Capacidad de ser reemplazado), no a la Coexistencia."
+                    }
                 ]
             },
             {
-                t: "SDLC y Modelo V",
-                qs: [
-                    { q: "¿Qué es SDLC?", a: ["Data Logic", "Software Development Life Cycle", "Design Code", "Digital Cycle"], c: 1, e: "Proceso de creación, mantenimiento y retiro." },
-                    { q: "En Modelo V, las pruebas se planifican:", a: ["Al final", "En paralelo a definición/diseño", "Después entrega", "Nunca"], c: 1, e: "Cada fase de desarrollo tiene su par de prueba." },
-                    { q: "Requerimientos se corresponde con:", a: ["Unitarias", "Aceptación", "Componentes", "Integración"], c: 1, e: "Requisitos definen qué aceptará el usuario." },
-                    { q: "La Codificación precede a:", a: ["Sistema", "Unitarias", "Negocio", "Venta"], c: 1, e: "Tras escribir código, se hacen pruebas de unidad." },
-                    { q: "Ventaja del Modelo V:", a: ["Flexible", "Niveles claros desde inicio", "Sin doc", "Barato"], c: 1, e: "Aporta estructura y disciplina a la calidad." },
-                    { q: "El mantenimiento ocurre:", a: ["Solo bugs", "Tras entrega (Corregir/Adaptar)", "En codificación", "Antes diseño"], c: 1, e: "Fase donde el software evoluciona vivo." },
-                    { q: "Cascada (Waterfall), testing empieza:", a: ["Día 1", "Cuando desarrollo termina", "Requerimientos", "Mitad"], c: 1, e: "Crítica: el testing llega demasiado tarde." },
-                    { q: "Shift Left Testing propone:", a: ["Mover final", "Probar lo más temprano posible", "Eliminar testers", "Linux"], c: 1, e: "Hallar errores antes es más barato." },
-                    { q: "Diseño Detallado se valida con:", a: ["Sistema", "Integración", "Unitarias", "Aceptación"], c: 1, e: "Diseño técnico cuando componentes interactúan." },
-                    { q: "SDLC termina cuando:", a: ["Entrega", "Software es retirado de uso", "Tester duerme", "Pagan"], c: 1, e: "Incluye hasta el retiro final del producto." }
+                "t": "Cuadrantes del Testing Agile",
+                "qs": [
+                    {
+                        "q": "¿Cuál es el propósito principal de los cuadrantes Q1 y Q2 dentro del desarrollo?",
+                        "a": [
+                            "Criticar el producto desde una perspectiva externa.",
+                            "Apoyar al equipo en la construcción del software.",
+                            "Evaluar únicamente los atributos no funcionales.",
+                            "Sustituir la necesidad de documentación técnica."
+                        ],
+                        "c": 1,
+                        "e": "Los cuadrantes Q1 y Q2 están orientados a dar soporte al equipo y son considerados procesos constructivos que ayudan a crear el producto."
+                    },
+                    {
+                        "q": "Si un equipo implementa TDD (Test Driven Development), ¿en qué cuadrante se está enfocando?",
+                        "a": [
+                            "Q1 - Tecnología, soporte al equipo.",
+                            "Q2 - Negocio, orientado al producto.",
+                            "Q3 - Negocio, crítica del producto.",
+                            "Q4 - Tecnología, crítica del producto."
+                        ],
+                        "c": 0,
+                        "e": "El Q1 se centra en la tecnología y en ayudar a los desarrolladores a escribir código de calidad desde el inicio mediante pruebas unitarias y TDD."
+                    },
+                    {
+                        "q": "Un tester que realiza pruebas exploratorias para cuestionar si el producto cumple con las expectativas del usuario está trabajando en:",
+                        "a": [
+                            "Q1",
+                            "Q2",
+                            "Q3",
+                            "Q4"
+                        ],
+                        "c": 2,
+                        "e": "El Q3 utiliza pruebas manuales y exploratorias para criticar el producto desde la perspectiva del usuario final."
+                    },
+                    {
+                        "q": "¿Qué cuadrante tiene como meta principal asegurar que el sistema sea robusto, seguro y escalable?",
+                        "a": [
+                            "Q1",
+                            "Q2",
+                            "Q3",
+                            "Q4"
+                        ],
+                        "c": 3,
+                        "e": "El Q4 se enfoca en la tecnología pero para criticar el producto, evaluando atributos no funcionales como rendimiento y seguridad."
+                    },
+                    {
+                        "q": "Las pruebas de aceptación, que validan si el sistema hace lo que el negocio necesita, pertenecen al cuadrante:",
+                        "a": [
+                            "Q1",
+                            "Q2",
+                            "Q3",
+                            "Q4"
+                        ],
+                        "c": 1,
+                        "e": "El Q2 está orientado al negocio y al producto, asegurando que las funcionalidades entreguen el valor requerido por el cliente."
+                    },
+                    {
+                        "q": "¿Cuál es la diferencia de enfoque entre los cuadrantes del lado izquierdo (Q1, Q4) y los del lado derecho (Q2, Q3)?",
+                        "a": [
+                            "La izquierda se orienta al negocio y la derecha a la tecnología.",
+                            "La izquierda se orienta a la tecnología y la derecha al negocio.",
+                            "La izquierda es manual y la derecha es siempre automatizada.",
+                            "No existe diferencia de enfoque, solo de herramientas."
+                        ],
+                        "c": 1,
+                        "e": "Q1 y Q4 tienen una base técnica/tecnológica, mientras que Q2 y Q3 se centran en las necesidades y visión del negocio/usuario."
+                    },
+                    {
+                        "q": "Según el texto, ¿qué sucede si un equipo decide ignorar uno de los cuatro cuadrantes?",
+                        "a": [
+                            "El desarrollo se vuelve más rápido y eficiente.",
+                            "No sucede nada, ya que son opcionales.",
+                            "Se comienza a acumular deuda técnica.",
+                            "El Product Owner debe asumir las tareas de ese cuadrante."
+                        ],
+                        "c": 2,
+                        "e": "El texto aclara que se deben realizar los cuatro cuadrantes para evitar la acumulación de deuda técnica y asegurar la calidad integral."
+                    },
+                    {
+                        "q": "Identifica la pareja de cuadrantes que se consideran 'críticos del producto' (evaluativos):",
+                        "a": [
+                            "Q1 y Q2",
+                            "Q2 y Q3",
+                            "Q3 y Q4",
+                            "Q1 y Q4"
+                        ],
+                        "c": 2,
+                        "e": "Q3 y Q4 se encargan de evaluar y criticar el producto terminado para encontrar riesgos y fallos en atributos no funcionales."
+                    },
+                    {
+                        "q": "Dentro del Q4, ¿cuál de estos es un ejemplo de prueba automatizada avanzada?",
+                        "a": [
+                            "Pruebas Unitarias.",
+                            "Pruebas de Usabilidad.",
+                            "Pruebas de Resiliencia y Seguridad.",
+                            "Pruebas de Criterios de Aceptación."
+                        ],
+                        "c": 2,
+                        "e": "La seguridad, resiliencia y escalabilidad son pruebas técnicas de crítica de producto propias del cuadrante Q4."
+                    },
+                    {
+                        "q": "Sobre el propósito de los cuadrantes, ¿cuál de las siguientes afirmaciones es INCORRECTA?",
+                        "a": [
+                            "El Q1 ayuda a diseñar bien y detectar errores temprano.",
+                            "El Q2 asegura que el sistema entregue valor real al cliente.",
+                            "El Q3 se realiza mediante pruebas automatizadas de rendimiento.",
+                            "El Q4 valida atributos no funcionales del sistema."
+                        ],
+                        "c": 2,
+                        "e": "Es incorrecta porque el Q3 se caracteriza por ser manual y exploratorio (ojos de usuario), no por automatización de rendimiento (que es Q4)."
+                    }
                 ]
             },
             {
-                t: "ISO 25010",
-                qs: [
-                    { q: "Un 'Error' es cometido por:", a: ["Software", "Humano (Dev/Analista)", "Hardware", "Usuario"], c: 1, e: "Equivocación humana que produce defecto." },
-                    { q: "Un 'Defecto' (Bug) reside en:", a: ["Mente", "Código o documentación", "Manual", "Factura"], c: 1, e: "Manifestación física del error en artefacto." },
-                    { q: "Un 'Fallo' ocurre cuando:", a: ["Compila", "Software presenta comportamiento incorrecto en ejecución", "Reporte", "Luz"], c: 1, e: "Desviación visible del servicio esperado." },
-                    { q: "Adecuación Funcional:", a: ["Rápido", "Hace lo que debe hacer", "Fácil", "Seguro"], c: 1, e: "Grado en que funciones cubren necesidades." },
-                    { q: "Usabilidad mide:", a: ["Velocidad", "Facilidad aprendizaje y uso", "Ataques", "Instalación"], c: 1, e: "Satisfacción y facilidad de operar." },
-                    { q: "Mantenibilidad:", a: ["Fácil modificar a futuro", "Servidor ON", "Barato", "Móvil"], c: 0, e: "Cambios rápidos sin romper todo." },
-                    { q: "Fiabilidad implica:", a: ["Bonito", "Funciona bajo condiciones por tiempo definido", "Traducir", "Manual"], c: 1, e: "Capacidad de mantener nivel de rendimiento." },
-                    { q: "Portabilidad evalúa:", a: ["Peso", "Facilidad trasladar entre entornos", "Licencia", "Colores"], c: 1, e: "Mover entre SO o servidores fácilmente." },
-                    { q: "Eficiencia de Desempeño:", a: ["Líneas", "Tiempos respuesta y recursos", "Ortografía", "Marca"], c: 1, e: "Comportamiento bajo carga (Velocidad/RAM)." },
-                    { q: "Seguridad busca:", a: ["No borre", "Protección datos y acceso autorizado", "Antivirus", "No robo"], c: 1, e: "Protección de info para evitar accesos no deseados." }
+                "t": "Historias de Usuario (User Stories) y Criterios de Aceptación",
+                "qs": [
+                    {
+                        "q": "¿Cuál es el cambio de enfoque principal que proponen las historias de usuario respecto a los requerimientos tradicionales?",
+                        "a": [
+                            "Enfocarse en descripciones técnicas detalladas del sistema.",
+                            "Cambiar el enfoque hacia el punto de vista del usuario o cliente.",
+                            "Eliminar por completo la necesidad de programar el software.",
+                            "Priorizar la documentación sobre la funcionalidad."
+                        ],
+                        "c": 1,
+                        "e": "Las historias de usuario buscan explicar la funcionalidad deseada desde la perspectiva de quien la usará, no desde cómo se implementa técnicamente."
+                    },
+                    {
+                        "q": "En la estructura típica de una historia de usuario, ¿qué representa la sección 'Para qué'?",
+                        "a": [
+                            "El tipo de usuario que realiza la acción.",
+                            "La funcionalidad técnica que se va a desarrollar.",
+                            "El beneficio o valor que obtiene el usuario.",
+                            "El tiempo que tardará el desarrollador en terminarla."
+                        ],
+                        "c": 2,
+                        "e": "El 'Para qué' define el propósito u objetivo, justificando por qué esa función es valiosa para el usuario."
+                    },
+                    {
+                        "q": "¿Quién es el responsable principal de redactar las historias de usuario?",
+                        "a": [
+                            "El Scrum Master.",
+                            "El equipo de QA.",
+                            "El Product Owner (PO).",
+                            "El cliente final directamente."
+                        ],
+                        "c": 2,
+                        "e": "Aunque el equipo puede colaborar, el Product Owner es quien lidera la redacción y priorización de las historias de usuario."
+                    },
+                    {
+                        "q": "Sobre el uso de historias de usuario en metodologías, ¿qué diferencia a Kanban de Scrum?",
+                        "a": [
+                            "En Kanban no se usan historias de usuario.",
+                            "En Scrum se usan para planificar sprints; en Kanban se trabajan de forma continua y flexible desde el backlog.",
+                            "En Kanban las historias son obligatoriamente más largas.",
+                            "Scrum solo permite historias de usuario escritas por el desarrollador."
+                        ],
+                        "c": 1,
+                        "e": "Scrum organiza las historias en bloques de tiempo (sprints), mientras que Kanban permite un flujo continuo de trabajo."
+                    },
+                    {
+                        "q": "¿Cuál es la función esencial de los Criterios de Aceptación para el equipo de QA?",
+                        "a": [
+                            "Permiten calcular el salario de los testers.",
+                            "Son la base necesaria para que QA pueda crear los casos de prueba.",
+                            "Sirven para reemplazar el código fuente.",
+                            "Indican cuándo el equipo debe irse de vacaciones."
+                        ],
+                        "c": 1,
+                        "e": "Sin criterios de aceptación claros, el equipo de QA no sabría qué condiciones específicas debe validar para confirmar que la historia está terminada."
+                    },
+                    {
+                        "q": "En el formato 'Given-When-Then', ¿qué representa el 'Then'?",
+                        "a": [
+                            "La acción que realiza el usuario.",
+                            "El contexto inicial o precondición.",
+                            "El resultado esperado o consecuencia de la acción.",
+                            "El nombre del usuario asignado."
+                        ],
+                        "c": 2,
+                        "e": "En el formato de criterios de aceptación, 'Then' (Entonces) describe qué debe suceder tras la acción del usuario."
+                    },
+                    {
+                        "q": "Dentro de las '3 C', ¿a qué se refiere la 'Conversation' (Conversación)?",
+                        "a": [
+                            "A un documento de 50 páginas explicando el código.",
+                            "Al diálogo entre cliente y desarrolladores para aclarar dudas.",
+                            "A la charla diaria entre el Scrum Master y el PO únicamente.",
+                            "A la grabación de las llamadas de soporte."
+                        ],
+                        "c": 1,
+                        "e": "La conversación enfatiza que la historia no es solo un texto estático, sino un punto de partida para discutir detalles entre los involucrados."
+                    },
+                    {
+                        "q": "Según el modelo INVEST, ¿qué significa que una historia sea 'Independiente' (I)?",
+                        "a": [
+                            "Que el usuario puede usarla sin internet.",
+                            "Que no debe depender de otras historias para poder ser desarrollada o entregada.",
+                            "Que solo un desarrollador puede trabajar en ella.",
+                            "Que no necesita ser testeada."
+                        ],
+                        "c": 1,
+                        "e": "La independencia facilita la planificación y evita que el bloqueo de una tarea detenga a todas las demás."
+                    },
+                    {
+                        "q": "En el acrónimo INVEST, la letra 'S' significa que la historia debe ser 'Small' (Pequeña). ¿Por qué?",
+                        "a": [
+                            "Para ahorrar papel al imprimir las tarjetas.",
+                            "Para que quepa en la pantalla del celular.",
+                            "Para que sea realizable en un corto periodo de tiempo y sea fácil de estimar.",
+                            "Porque los usuarios no leen textos largos."
+                        ],
+                        "c": 2,
+                        "e": "Una historia pequeña reduce la incertidumbre y permite una entrega de valor más rápida y frecuente."
+                    },
+                    {
+                        "q": "¿Qué cualidad de INVEST asegura que una historia pueda ser validada mediante pruebas?",
+                        "a": [
+                            "Negociable (N).",
+                            "Valiosa (V).",
+                            "Comprobable / Testable (T).",
+                            "Estimable (E)."
+                        ],
+                        "c": 2,
+                        "e": "Si una historia no se puede probar (Testable), es imposible saber con certeza si se ha cumplido el objetivo."
+                    },
+                    {
+                        "q": "¿Cuál es un beneficio directo de redactar historias de usuario precisas?",
+                        "a": [
+                            "Garantiza que el software nunca tenga bugs.",
+                            "Promueve la colaboración entre equipos y coloca al cliente en primer lugar.",
+                            "Elimina la necesidad de tener reuniones diarias.",
+                            "Reduce el costo del hardware necesario."
+                        ],
+                        "c": 1,
+                        "e": "Las historias precisas alinean a todos los equipos hacia un objetivo común centrado en el usuario."
+                    },
+                    {
+                        "q": "Identifica la afirmación INCORRECTA sobre los Criterios de Aceptación:",
+                        "a": [
+                            "Ayudan a eliminar ambigüedades.",
+                            "Aseguran que todos entiendan lo que se espera del producto.",
+                            "Son opcionales y no influyen en la calidad del testing.",
+                            "Deben ser conocidos por el equipo de desarrollo."
+                        ],
+                        "c": 2,
+                        "e": "Es incorrecta porque los criterios de aceptación NO son opcionales; son fundamentales para definir el 'Done' (terminado) y realizar el testing."
+                    },
+                    {
+                        "q": "En la fase de redacción, ¿qué busca identificar el 'Perfil' del usuario final?",
+                        "a": [
+                            "El lenguaje de programación preferido del usuario.",
+                            "A quién está dirigida la función y qué espera lograr esa persona.",
+                            "El nombre real y dirección de cada cliente.",
+                            "La marca de la computadora que usa el usuario."
+                        ],
+                        "c": 1,
+                        "e": "Identificar el perfil permite entender el contexto y las necesidades reales de quien usará la funcionalidad."
+                    },
+                    {
+                        "q": "En el modelo INVEST, ¿qué cualidad permite que una historia sea discutida y ajustada entre el equipo y el negocio?",
+                        "a": [
+                            "Independiente (I).",
+                            "Negociable (N).",
+                            "Valiosa (V).",
+                            "Estimable (E)."
+                        ],
+                        "c": 1,
+                        "e": "Una historia 'Negociable' no es un contrato cerrado; permite ajustes basados en el feedback y la viabilidad técnica."
+                    },
+                    {
+                        "q": "¿Qué elemento de la historia de usuario responde a la pregunta '¿Qué problema se está resolviendo?'?",
+                        "a": [
+                            "El Título.",
+                            "El Perfil.",
+                            "El Propósito.",
+                            "La Tarjeta física."
+                        ],
+                        "c": 2,
+                        "e": "El propósito analiza el fondo del asunto: el problema a resolver y el beneficio que el sistema aporta."
+                    }
+                ]
+            },
+            {
+                "t": "Metodologías y Ciclo de Vida del Desarrollo de Software (SDLC)",
+                "qs": [
+                    {
+                        "q": "¿Cuál es la característica principal de la metodología en Cascada?",
+                        "a": [
+                            "Es un proceso iterativo que permite volver atrás en cualquier momento.",
+                            "Es secuencial y cada etapa depende estrictamente de la anterior.",
+                            "Se basa únicamente en la creación de prototipos rápidos.",
+                            "No requiere planificación ni análisis de riesgos."
+                        ],
+                        "c": 1,
+                        "e": "En el modelo Cascada, el flujo es unidireccional; para avanzar a una fase, la anterior debe estar completamente terminada y no se permite retroceder."
+                    },
+                    {
+                        "q": "En la metodología en Espiral, ¿qué actividad es fundamental realizar en cada ciclo o vuelta?",
+                        "a": [
+                            "La entrega final del producto al cliente.",
+                            "El análisis de riesgos y la evaluación de lo más crítico.",
+                            "La redacción de manuales de usuario finales.",
+                            "La elección de un nuevo lenguaje de programación."
+                        ],
+                        "c": 1,
+                        "e": "La metodología Espiral se distingue por su enfoque en la gestión de riesgos en cada una de sus iteraciones."
+                    },
+                    {
+                        "q": "¿Cuál es el objetivo primordial de utilizar Prototipos en el desarrollo?",
+                        "a": [
+                            "Sustituir la fase de codificación final.",
+                            "Obtener feedback temprano del cliente mediante versiones visuales rápidas.",
+                            "Evitar la fase de pruebas y mantenimiento.",
+                            "Garantizar que el software sea portable a cualquier sistema operativo."
+                        ],
+                        "c": 1,
+                        "e": "Los prototipos permiten que el cliente vea una representación del sistema pronto, reduciendo malentendidos sobre los requisitos."
+                    },
+                    {
+                        "q": "Dentro del ciclo de vida, ¿en qué fase se redactan las historias de usuario y se estiman los recursos?",
+                        "a": [
+                            "Comunicación.",
+                            "Planificación y análisis.",
+                            "Codificación.",
+                            "Formación."
+                        ],
+                        "c": 1,
+                        "e": "Durante la planificación y análisis se recolecta la información necesaria para definir el alcance y los recursos del proyecto."
+                    },
+                    {
+                        "q": "¿Qué se evalúa específicamente en el 'Estudio de viabilidad'?",
+                        "a": [
+                            "Si el código sigue las buenas prácticas de desarrollo.",
+                            "Si el proyecto es realizable económica y técnicamente.",
+                            "La tipografía y colores que se usarán en el diseño físico.",
+                            "La calidad de los manuales de usuario."
+                        ],
+                        "c": 1,
+                        "e": "El estudio de viabilidad determina si la organización cuenta con el dinero, la tecnología y el tiempo necesarios para completar el proyecto con éxito."
+                    },
+                    {
+                        "q": "Sobre la fase de Diseño, ¿cuál es la diferencia entre el diseño lógico y el físico?",
+                        "a": [
+                            "El lógico es el código fuente y el físico es el hardware.",
+                            "El lógico es la estructura conceptual y el físico es la implementación técnica detallada.",
+                            "El lógico es para el cliente y el físico es para el departamento legal.",
+                            "No hay diferencia, son dos nombres para la misma actividad."
+                        ],
+                        "c": 1,
+                        "e": "El diseño lógico define el 'qué' (conceptos), mientras que el diseño físico define el 'cómo' (especificaciones técnicas de implementación)."
+                    },
+                    {
+                        "q": "En la fase de Codificación, ¿qué criterios se deben priorizar según el texto?",
+                        "a": [
+                            "La rapidez de entrega sobre la calidad del código.",
+                            "La eficiencia, la calidad del código y las buenas prácticas.",
+                            "El uso del lenguaje más antiguo disponible.",
+                            "La cantidad de líneas de código escritas."
+                        ],
+                        "c": 1,
+                        "e": "Una codificación profesional busca un equilibrio entre la eficiencia del sistema y la mantenibilidad a través de buenas prácticas."
+                    },
+                    {
+                        "q": "¿Qué actividad caracteriza a la fase de Integración?",
+                        "a": [
+                            "La instalación del software en las computadoras del cliente.",
+                            "La conexión con componentes externos como APIs o servicios de terceros.",
+                            "La corrección de errores encontrados por el equipo de QA.",
+                            "La redacción de los términos del contrato."
+                        ],
+                        "c": 1,
+                        "e": "La integración asegura que el software desarrollado pueda comunicarse correctamente con otros sistemas y servicios externos."
+                    },
+                    {
+                        "q": "En la fase de Implementación, ¿qué atributos se evalúan al instalar el software en el entorno real?",
+                        "a": [
+                            "Integridad, adaptabilidad y portabilidad.",
+                            "Exclusivamente el diseño lógico.",
+                            "La cantidad de algoritmos de riesgo utilizados.",
+                            "La velocidad de escritura de los desarrolladores."
+                        ],
+                        "c": 0,
+                        "e": "La implementación pone a prueba la capacidad del sistema para funcionar en su destino final, verificando su estabilidad y adaptación."
+                    },
+                    {
+                        "q": "La creación de manuales y tutoriales pertenece a la fase de:",
+                        "a": [
+                            "Mantenimiento.",
+                            "Diseño.",
+                            "Formación.",
+                            "Análisis del sistema."
+                        ],
+                        "c": 2,
+                        "e": "La formación es la etapa donde se transfiere el conocimiento necesario al usuario final para que el sistema sea adoptado correctamente."
+                    },
+                    {
+                        "q": "¿Cuál es el propósito del 'Mantenimiento evolutivo'?",
+                        "a": [
+                            "Planificar el proyecto desde cero nuevamente.",
+                            "Corregir errores, realizar mejoras y garantizar la evolución del sistema.",
+                            "Eliminar el software una vez que el cliente termina de usarlo.",
+                            "Entrenar a los nuevos programadores que entran a la empresa."
+                        ],
+                        "c": 1,
+                        "e": "El mantenimiento no es solo arreglar fallos, sino también adaptar el software a nuevas necesidades que surjan tras la entrega."
+                    },
+                    {
+                        "q": "Identifica la afirmación INCORRECTA respecto al ciclo de vida del desarrollo:",
+                        "a": [
+                            "El proceso comienza con la comunicación con el cliente.",
+                            "Las pruebas se realizan para validar requisitos y detectar errores.",
+                            "La fase de análisis del sistema ignora las limitaciones del producto.",
+                            "El equipo técnico asigna recursos durante el análisis del sistema."
+                        ],
+                        "c": 2,
+                        "e": "Es incorrecta porque en el análisis del sistema es vital identificar las limitaciones para que la planificación sea realista."
+                    }
                 ]
             }
         ];
