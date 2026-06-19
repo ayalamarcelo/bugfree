@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen de Práctica - QA & Automation</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --success: #16a34a;
+            --success-bg: #f0fdf4;
+            --error: #dc2626;
+            --error-bg: #fef2f2;
+            --border: #e2e8f0;
+            --accent: #7c3aed;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--surface);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        header {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        .question-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .option-item:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-item input[type="radio"] {
+            margin-top: 4px;
+            cursor: pointer;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        textarea,
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #f8fafc;
+            resize: vertical;
+        }
+
+        textarea:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #fff;
+        }
+
+        /* SVG Flowchart Diagram placeholder inside the question */
+        .diagram-container {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 30px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .feedback.correct {
+            display: block;
+            background-color: var(--success-bg);
+            border-left: 4px solid var(--success);
+            color: #15803d;
+        }
+
+        .feedback.incorrect {
+            display: block;
+            background-color: var(--error-bg);
+            border-left: 4px solid var(--error);
+            color: #b91c1c;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .score-banner {
+            display: none;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .score-banner h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .score-banner p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .list-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .badge-choice {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-text {
+            background-color: #f3e8ff;
+            color: #6b21a8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Examen de Práctica - QA & Automation</h1>
+        </header>
+
+        <div id="scoreBanner" class="score-banner">
+            <h2 id="scoreText">0 / 16</h2>
+            <p>¡Examen realizado con éxito! Revisá las respuestas detalladas abajo.</p>
+        </div>
+
+        <form id="quizForm" onsubmit="evaluateQuiz(event)">
+
+            <!-- Q1 -->
+            <div class="question-card" data-type="choice" data-id="1">
+                <span class="badge badge-choice">Opción Múltiple</span>
+                <div class="question-title">1) Tenemos que crear casos de prueba para el inicio de sesión de una
+                    aplicación web, los campos a ingresar son Nombre de Usuario y Contraseña. También disponemos de un
+                    botón Iniciar Sesión. ¿Cuál sería una precondición válida para este caso de prueba?</div>
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q1" value="A">
+                        <span>Poder loguear en la app</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q1" value="B">
+                        <span>Ingresar nombre de usuario</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q1" value="C">
+                        <span>Acceder al sistema</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q1" value="D">
+                        <span>Abrir el navegador e ingresar la dirección de la aplicación</span>
+                    </label>
+                </div>
+                <div id="feedback-1" class="feedback"></div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question-card" data-type="choice" data-id="2">
+                <span class="badge badge-choice">Opción Múltiple</span>
+                <div class="question-title">2) ¿Cuál de estos es un ejemplo de alta severidad y alta prioridad?</div>
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q2" value="A">
+                        <span>El botón Guardar de una pantalla principal del sistema no funciona.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q2" value="B">
+                        <span>El tamaño de la fuente de una pantalla casi no accedida.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q2" value="C">
+                        <span>El logo de la empresa en una de las pantallas.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q2" value="D">
+                        <span>Todas las opciones son correctas.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q2" value="E">
+                        <span>Ninguna opción es correcta.</span>
+                    </label>
+                </div>
+                <div id="feedback-2" class="feedback"></div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question-card" data-type="choice" data-id="3">
+                <span class="badge badge-choice">Opción Múltiple</span>
+                <div class="question-title">3) ¿Cuál de estas afirmaciones es verdadera respecto del ciclo de vida de un
+                    defecto?</div>
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q3" value="A">
+                        <span>Los estados dependen del proyecto o la herramienta que usemos.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q3" value="B">
+                        <span>Si el tester no ve que el defecto está arreglado, pasa el defecto a “Reabierto”.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q3" value="C">
+                        <span>Cuando el defecto está en estado “Asignado” significa que un determinado desarrollador
+                            debe arreglarlo.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q3" value="D">
+                        <span>Todas son correctas.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q3" value="E">
+                        <span>Ninguna es correcta.</span>
+                    </label>
+                </div>
+                <div id="feedback-3" class="feedback"></div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question-card" data-type="choice" data-id="4">
+                <span class="badge badge-choice">Opción Múltiple</span>
+                <div class="question-title">4) ¿Cuál de estas afirmaciones NO es verdadera respecto a la severidad y
+                    prioridad?</div>
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q4" value="A">
+                        <span>La severidad depende de las funcionalidades bajo test.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q4" value="B">
+                        <span>Un defecto de prioridad alta es por ejemplo una funcionalidad trivial que no anda.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q4" value="C">
+                        <span>Un defecto puede tener prioridad alta pero severidad baja.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q4" value="D">
+                        <span>Todas correctas.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q4" value="E">
+                        <span>Ninguna correcta.</span>
+                    </label>
+                </div>
+                <div id="feedback-4" class="feedback"></div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question-card" data-type="choice" data-id="5">
+                <span class="badge badge-choice">Opción Múltiple</span>
+                <div class="question-title">5) Tipos de pruebas según el conocimiento interno del software:</div>
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q5" value="A">
+                        <span>Caja Blanca</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q5" value="B">
+                        <span>Caja Negra</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q5" value="C">
+                        <span>Caja Negra y Blanca</span>
+                    </label>
+                </div>
+                <div id="feedback-5" class="feedback"></div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="question-card" data-type="development" data-id="6">
+                <span class="badge badge-text">Desarrollo (Escribir 4 ítems)</span>
+                <div class="question-title">6) Mencione 4 tipos de pruebas según su finalidad:</div>
+                <div class="list-inputs">
+                    <input type="text" id="q6_1" placeholder="1.">
+                    <input type="text" id="q6_2" placeholder="2.">
+                    <input type="text" id="q6_3" placeholder="3.">
+                    <input type="text" id="q6_4" placeholder="4.">
+                </div>
+                <div id="feedback-6" class="feedback"></div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="question-card" data-type="development" data-id="7">
+                <span class="badge badge-text">Desarrollo (Escribir 3 ítems)</span>
+                <div class="question-title">7) Mencione 3 tipos de pruebas candidatas para automatización:</div>
+                <div class="list-inputs">
+                    <input type="text" id="q7_1" placeholder="1.">
+                    <input type="text" id="q7_2" placeholder="2.">
+                    <input type="text" id="q7_3" placeholder="3.">
+                </div>
+                <div id="feedback-7" class="feedback"></div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="question-card" data-type="choice" data-id="8">
+                <span class="badge badge-choice">Opción Múltiple</span>
+                <div class="question-title">8) ¿Cuál de estas afirmaciones es incorrecta?</div>
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q8" value="A">
+                        <span>Las técnicas basadas en experiencias son complementarias a las de caja negra y
+                            blanca.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q8" value="B">
+                        <span>No es necesario saber de técnicas de programación para realizar las técnicas de caja
+                            blanca.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q8" value="C">
+                        <span>Las técnicas de caja negra se centra en la verificación de funcionalidades.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q8" value="D">
+                        <span>Las técnicas de caja blanca se centra en la estructura de datos.</span>
+                    </label>
+                </div>
+                <div id="feedback-8" class="feedback"></div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="question-card" data-type="development" data-id="9">
+                <span class="badge badge-text">Desarrollo (Escribir 3 métodos)</span>
+                <div class="question-title">9) APIS: Mencione 3 métodos HTTP comunes:</div>
+                <div class="list-inputs">
+                    <input type="text" id="q9_1" placeholder="1.">
+                    <input type="text" id="q9_2" placeholder="2.">
+                    <input type="text" id="q9_3" placeholder="3.">
+                </div>
+                <div id="feedback-9" class="feedback"></div>
+            </div>
+
+            <!-- Q10 -->
+            <div class="question-card" data-type="choice" data-id="10">
+                <span class="badge badge-choice">Opción Múltiple</span>
+                <div class="question-title">10) ¿Qué es una API y cuál es su principal función?</div>
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q10" value="A">
+                        <span>Una app web que centraliza y procesa las peticiones de los clientes.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q10" value="B">
+                        <span>Un software que gestiona la capa de persistencia para sincronizar bases de datos.</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q10" value="C">
+                        <span>Una interfaz que permite la comunicación a través de un conjunto de reglas.</span>
+                    </label>
+                </div>
+                <div id="feedback-10" class="feedback"></div>
+            </div>
+
+            <!-- Q11 -->
+            <div class="question-card" data-type="choice" data-id="11">
+                <span class="badge badge-choice">Opción Múltiple</span>
+                <div class="question-title">11) Teniendo este diagrama de flujo, ¿cuántos casos de prueba necesitamos
+                    usando la técnica de Cobertura de Sentencia?</div>
+
+                <div class="diagram-container">
+                    <!-- SVG Vector representation of a typical multi-branch conditional flow diagram for Statement Coverage testing -->
+                    <iframe src="https://drive.google.com/file/d/1Se6jcRgVpATf-QvwToebbKbzecpabZ9Z/preview?authuser=0"
+                        style="background-color: white;">
+                    </iframe>
+                </div>
+
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q11" value="A">
+                        <span>1 solo caso cubre el 100%</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q11" value="B">
+                        <span>4 casos</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q11" value="C">
+                        <span>5 casos</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q11" value="D">
+                        <span>Otra respuesta</span>
+                    </label>
+                </div>
+                <div id="feedback-11" class="feedback"></div>
+            </div>
+
+            <!-- Q12 -->
+            <div class="question-card" data-type="automation-goals" data-id="12">
+                <span class="badge badge-text">Campos Dinámicos</span>
+                <div class="question-title">12) ¿Cuáles son los objetivos de automation?</div>
+                <div class="list-inputs">
+                    <input type="text" id="q12_1" placeholder="Objetivo de automation 1">
+                    <input type="text" id="q12_2" placeholder="Objetivo de automation 2">
+                    <input type="text" id="q12_3" placeholder="Objetivo de automation 3">
+
+                </div>
+                <div id="feedback-12" class="feedback"></div>
+            </div>
+
+            <!-- Q13 -->
+            <div class="question-card" data-type="choice" data-id="13">
+                <span class="badge badge-choice">Opción Múltiple</span>
+                <div class="question-title">13) ¿Cuál de estos roles es la mejor opción para desarrollar un framework?
+                </div>
+                <div class="options-list">
+                    <label class="option-item">
+                        <input type="radio" name="q13" value="A">
+                        <span>Tester</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q13" value="B">
+                        <span>Ingeniero de automatización</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q13" value="C">
+                        <span>Desarrollador</span>
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="q13" value="D">
+                        <span>QA</span>
+                    </label>
+                </div>
+                <div id="feedback-13" class="feedback"></div>
+            </div>
+
+            <!-- Q14 -->
+            <div class="question-card" data-type="development" data-id="14">
+                <span class="badge badge-text">Desarrollo (Escribir 3 ítems)</span>
+                <div class="question-title">14) Nombrar al menos 3 tipos de Test Automation Framework:</div>
+                <div class="list-inputs">
+                    <input type="text" id="q14_1" placeholder="Framework tipo 1">
+                    <input type="text" id="q14_2" placeholder="Framework tipo 2">
+                    <input type="text" id="q14_3" placeholder="Framework tipo 3">
+                </div>
+                <div id="feedback-14" class="feedback"></div>
+            </div>
+
+            <!-- M15 -->
+            <div class="question-card" data-type="development" data-id="15">
+                <span class="badge badge-text">Desarrollo (Escribir 6 ítems)</span>
+                <div class="question-title">15) ¿Cuáles son los ítems principales para armar un plan de datos? Nombrar
+                    al menos 6:</div>
+                <div class="list-inputs">
+                    <input type="text" id="q15_1" placeholder="Ítem de plan de datos 1">
+                    <input type="text" id="q15_2" placeholder="Ítem de plan de datos 2">
+                    <input type="text" id="q15_3" placeholder="Ítem de plan de datos 3">
+                    <input type="text" id="q15_4" placeholder="Ítem de plan de datos 4">
+                    <input type="text" id="q15_5" placeholder="Ítem de plan de datos 5">
+                    <input type="text" id="q15_6" placeholder="Ítem de plan de datos 6">
+                </div>
+                <div id="feedback-15" class="feedback"></div>
+            </div>
+
+            <!-- Q16 -->
+            <div class="question-card" data-type="development" data-id="16">
+                <span class="badge badge-text">Desarrollo Ordinal</span>
+                <div class="question-title">16) ¿Cuál es el orden clásico de la pirámide de automatización? (Escríbelos
+                    de la base hacia la punta)</div>
+                <div class="list-inputs">
+                    <input type="text" id="q16_1" placeholder="(Nivel 1)">
+                    <input type="text" id="q16_2" placeholder="(Nivel 2)">
+                    <input type="text" id="q16_3" placeholder="(Nivel 3)">
+                </div>
+                <div id="feedback-16" class="feedback"></div>
+            </div>
+
+            <button type="submit" class="btn-submit">Enviar y Evaluar Examen</button>
+        </form>
+    </div>
+
+    <script>
+        function evaluateQuiz(event) {
+            event.preventDefault();
+            let score = 0;
+            const totalQuestions = 16;
+
+            // --- Q1 Evaluation ---
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const f1 = document.getElementById('feedback-1');
+            if (q1) {
+                if (q1.value === 'D') {
+                    score++;
+                    f1.className = "feedback correct";
+                    f1.innerHTML = "<div class='feedback-title'>¡Correcto!</div>Abrir el navegador e ingresar la URL es una precondición válida porque establece el estado inicial del sistema requerido antes de ejecutar los pasos del login.";
+                } else {
+                    f1.className = "feedback incorrect";
+                    let msg = "";
+                    if (q1.value === 'A') msg = "Incorrecto. 'Poder loguear en la app' es más bien el objetivo esperado o resultado esperado de la funcionalidad, no un estado inicial necesario.";
+                    if (q1.value === 'B') msg = "Incorrecto. 'Ingresar nombre de usuario' constituye un paso directo de ejecución del caso de prueba, no un paso previo o precondición.";
+                    if (q1.value === 'C') msg = "Incorrecto. 'Acceder al sistema' es la consecuencia o resultado esperado tras presionar con éxito el botón de login.";
+                    f1.innerHTML = `<div class='feedback-title'>Incorrecto</div>${msg}`;
+                }
+            } else {
+                f1.className = "feedback incorrect";
+                f1.innerHTML = "No respondiste esta pregunta.";
+            }
+
+            // --- Q2 Evaluation ---
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const f2 = document.getElementById('feedback-2');
+            if (q2) {
+                if (q2.value === 'A') {
+                    score++;
+                    f2.className = "feedback correct";
+                    f2.innerHTML = "<div class='feedback-title'>¡Correcto!</div>El botón Guardar en la pantalla principal afecta directamente la funcionalidad crítica (Severidad Alta) y detiene el flujo operativo de negocio principal (Prioridad Alta).";
+                } else {
+                    f2.className = "feedback incorrect";
+                    let msg = "Incorrecto.";
+                    if (q2.value === 'B') msg = "Incorrecto. La fuente en una pantalla poco accedida suele ser de Severidad Baja y Prioridad Baja.";
+                    if (q2.value === 'C') msg = "Incorrecto. Un logo defectuoso o mal posicionado suele ser un tema cosmético (Severidad Baja), aunque su prioridad podría variar según marketing.";
+                    if (q2.value === 'D' || q2.value === 'E') msg = "Incorrecto. El botón 'Guardar' roto sí representa de forma exacta e inequívoca el concepto de Alta Severidad y Prioridad.";
+                    f2.innerHTML = `<div class='feedback-title'>Incorrecto</div>${msg}`;
+                }
+            } else {
+                f2.className = "feedback incorrect";
+                f2.innerHTML = "No respondiste esta pregunta.";
+            }
+
+            // --- Q3 Evaluation ---
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            const f3 = document.getElementById('feedback-3');
+            if (q3) {
+                if (q3.value === 'D') {
+                    score++;
+                    f3.className = "feedback correct";
+                    f3.innerHTML = "<div class='feedback-title'>¡Correcto!</div>Todas las afirmaciones presentadas son verdaderas en la gestión de incidencias y ciclos de vida tradicionales del testing.";
+                } else {
+                    f3.className = "feedback incorrect";
+                    f3.innerHTML = "<div class='feedback-title'>Incorrecto</div>La opción seleccionada por sí sola es verdadera, pero la opción correcta global era 'Todas son correctas' ya que los tres enunciados de la A a la C se cumplen rigurosamente.";
+                }
+            } else {
+                f3.className = "feedback incorrect";
+                f3.innerHTML = "No respondiste esta pregunta.";
+            }
+
+            // --- Q4 Evaluation ---
+            const q4 = document.querySelector('input[name="q4"]:checked');
+            const f4 = document.getElementById('feedback-4');
+            if (q4) {
+                if (q4.value === 'B') {
+                    score++;
+                    f4.className = "feedback correct";
+                    f4.innerHTML = "<div class='feedback-title'>¡Correcto!</div>Esta afirmación NO es verdadera. Si una funcionalidad es completamente trivial y no funciona, su prioridad de negocio comúnmente será Baja, no Alta.";
+                } else {
+                    f4.className = "feedback incorrect";
+                    let msg = "Incorrecto.";
+                    if (q4.value === 'A') msg = "Incorrecto. La severidad efectivamente sí depende del impacto en las funcionalidades bajo test, por ende esa afirmación es verdadera.";
+                    if (q4.value === 'C') msg = "Incorrecto. Un defecto puede tener prioridad alta y severidad baja (por ejemplo, un error ortográfico en el eslogan corporativo principal).";
+                    f4.innerHTML = `<div class='feedback-title'>Incorrecto</div>${msg}`;
+                }
+            } else {
+                f4.className = "feedback incorrect";
+                f4.innerHTML = "No respondiste esta pregunta.";
+            }
+
+            // --- Q5 Evaluation ---
+            const q5 = document.querySelector('input[name="q5"]:checked');
+            const f5 = document.getElementById('feedback-5');
+            if (q5) {
+                if (q5.value === 'C') {
+                    score++;
+                    f5.className = "feedback correct";
+                    f5.innerHTML = "<div class='feedback-title'>¡Correcto!</div>Las pruebas de Caja Negra (basadas en comportamiento sin ver código) y Caja Blanca (basadas en estructura de código interna) son las dos vertientes principales.";
+                } else {
+                    f5.className = "feedback incorrect";
+                    f5.innerHTML = "<div class='feedback-title'>Incorrecto</div>Faltó completitud. Ambas clasificaciones (Caja Negra y Caja Blanca) responden al criterio del conocimiento interno del software.";
+                }
+            } else {
+                f5.className = "feedback incorrect";
+                f5.innerHTML = "No respondiste esta pregunta.";
+            }
+
+            // --- Q6 Evaluation (Development) ---
+            const q6_inputs = [
+                document.getElementById('q6_1').value.toLowerCase(),
+                document.getElementById('q6_2').value.toLowerCase(),
+                document.getElementById('q6_3').value.toLowerCase(),
+                document.getElementById('q6_4').value.toLowerCase()
+            ];
+            const f6 = document.getElementById('feedback-6');
+            let q6_correct_count = 0;
+            const q6_keywords = ['progresión', 'regresión', 'smoke test', 'sanidad', 'exploratorias', 'sanity test', 'humo', 'cordura'];
+            q6_inputs.forEach(inp => {
+                if (q6_keywords.some(kw => inp.includes(kw) && inp.trim().length > 2)) q6_correct_count++;
+            });
+
+            if (q6_correct_count >= 3) {
+                score++;
+                f6.className = "feedback correct";
+                f6.innerHTML = `<div class='feedback-title'>¡Correcto!</div>Identificaste los tipos correctamente. Tu entrada coincide con clasificaciones según finalidad (Progresivas, Regresivas, Smoke, Sanidad, Exploratorias).`;
+            } else {
+                f6.className = "feedback incorrect";
+                f6.innerHTML = `<div class='feedback-title'>Revisión Requerida</div>Asegúrate de enumerar los tipos pedidos explícitamente como Progresivas, Regresivas/Smoke, Regresivas/Sanidad, Exploratorias.`;
+            }
+
+            // --- Q7 Evaluation ---
+            const q7_inputs = [
+                document.getElementById('q7_1').value.toLowerCase(),
+                document.getElementById('q7_2').value.toLowerCase(),
+                document.getElementById('q7_3').value.toLowerCase()
+            ];
+            const f7 = document.getElementById('feedback-7');
+            let q7_correct_count = 0;
+            const q7_keywords = ['aceptación del build', 'smoke test', 'regresión', 'sanidad', 'compatibilidad', 'portabilidad', 'tediosas', 'costosas', 'criticas', 'manualmente costosas', 'funcionalidad critica'];
+            q7_inputs.forEach(inp => {
+                if (q7_keywords.some(kw => inp.includes(kw) && inp.trim().length > 2)) q7_correct_count++;
+            });
+
+            if (q7_correct_count >= 2) {
+                score++;
+                f7.className = "feedback correct";
+                f7.innerHTML = `<div class='feedback-title'>¡Correcto!</div>Las pruebas unitarias, de componentes y regresivas recurrentes (Smoke/Sanidad) constituyen las mejores candidatas natas de automatización.`;
+            } else {
+                f7.className = "feedback incorrect";
+                f7.innerHTML = `<div class='feedback-title'>Revisión Requerida</div>Se esperaban respuestas asociadas a componentes/unitarias, regresivas o de smoke.`;
+            }
+
+            // --- Q8 Evaluation ---
+            const q8 = document.querySelector('input[name="q8"]:checked');
+            const f8 = document.getElementById('feedback-8');
+
+            if (q8) {
+                // Ahora tanto la opción D como la B se toman como respuestas válidas y suman al score
+                if (q8.value === 'D' || q8.value === 'B') {
+                    score++;
+                    f8.className = "feedback correct";
+                    f8.innerHTML = "<div class='feedback-title'>¡Correcto!</div>";
+                } else {
+                    f8.className = "feedback incorrect";
+                    let msg = "Incorrecto.";
+
+                    // Mensaje específico si eligen la opción A
+                    if (q8.value === 'A') {
+                        msg = "Incorrecto. Las técnicas basadas en experiencia sí son complementarias a las de caja negra y blanca, por ende esa afirmación es verdadera.";
+                    }
+
+                    // (Nota: Se eliminó el "if" de la opción B para que no tire error si la seleccionan)
+
+                    f8.innerHTML = `<div class='feedback-title'>Incorrecto</div>${msg}`;
+                }
+            } else {
+                f8.className = "feedback incorrect";
+                f8.innerHTML = "No respondiste esta pregunta.";
+            }
+
+            // --- Q9 Evaluation ---
+            const q9_inputs = [
+                document.getElementById('q9_1').value.toUpperCase().trim(),
+                document.getElementById('q9_2').value.toUpperCase().trim(),
+                document.getElementById('q9_3').value.toUpperCase().trim()
+            ];
+            const f9 = document.getElementById('feedback-9');
+            const valid_methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'];
+            let q9_correct_count = 0;
+            q9_inputs.forEach(v => { if (valid_methods.includes(v)) q9_correct_count++; });
+
+            if (q9_correct_count >= 2) {
+                score++;
+                f9.className = "feedback correct";
+                f9.innerHTML = `<div class='feedback-title'>¡Correcto!</div>Métodos HTTP válidos detectados: ${q9_inputs.join(', ')}.`;
+            } else {
+                f9.className = "feedback incorrect";
+                f9.innerHTML = `<div class='feedback-title'>Incorrecto</div>Introduce métodos HTTP estándar válidos como GET, POST, PUT o DELETE.`;
+            }
+
+            // --- Q10 Evaluation ---
+            const q10 = document.querySelector('input[name="q10"]:checked');
+            const f10 = document.getElementById('feedback-10');
+            if (q10) {
+                if (q10.value === 'C') {
+                    score++;
+                    f10.className = "feedback correct";
+                    f10.innerHTML = "<div class='feedback-title'>¡Correcto!</div>Una API es de manera exacta una interfaz de programación de aplicaciones que permite interactuar bajo un conjunto estricto de reglas.";
+                } else {
+                    f10.className = "feedback incorrect";
+                    f10.innerHTML = "<div class='feedback-title'>Incorrecto</div>Las opciones A y B son definiciones ambiguas, incompletas y coloquiales. La definición formal es la C.";
+                }
+            } else {
+                f10.className = "feedback incorrect";
+                f10.innerHTML = "No respondiste esta pregunta.";
+            }
+
+            // --- Q11 Evaluation ---
+            const q11 = document.querySelector('input[name="q11"]:checked');
+            const f11 = document.getElementById('feedback-11');
+
+            if (q11) {
+
+                if (q11.value === 'B' || q11.value === '2') {
+                    score++;
+                    f11.className = "feedback correct";
+                    f11.innerHTML = "<div class='feedback-title'>¡Correcto!</div>Se requieren exactamente 4 casos de prueba para cubrir los caminos o condiciones según el diagrama.";
+                } else {
+                    f11.className = "feedback incorrect";
+                    f11.innerHTML = "<div class='feedback-title'>Incorrecto</div>Analiza bien el diagrama: la estructura requiere evaluar de forma exhaustiva los flujos, por lo que la respuesta correcta es 4.";
+                }
+            } else {
+                f11.className = "feedback incorrect";
+                f11.innerHTML = "No respondiste esta pregunta.";
+            }
+            // --- Q12 Evaluation (Automation Goals Check) ---
+            const q12_inputs = [
+                document.getElementById('q12_1').value.toLowerCase(),
+                document.getElementById('q12_2').value.toLowerCase(),
+                document.getElementById('q12_3').value.toLowerCase()
+            ];
+            const f12 = document.getElementById('feedback-12');
+            let q12_match = 0;
+            const automation_goals = ['reducir deuda técnica', 'pruebas continuas', 'reducir ciclos de regresión de las pruebas'];
+            q12_inputs.forEach(inp => {
+                if (automation_goals.some(g => inp.includes(g) && inp.trim().length > 3)) q12_match++;
+            });
+
+            if (q12_match >= 2 || q12_inputs.every(i => i.trim().length > 4)) {
+                score++;
+                f12.className = "feedback correct";
+                f12.innerHTML = "<div class='feedback-title'>¡Correcto!</div>Campos rellenados con coherencia. Los objetivos típicos son acelerar tiempos de ejecución, incrementar cobertura, robustecer las regresiones recurrentes y mitigar errores humanos.";
+            } else {
+                f12.className = "feedback incorrect";
+                f12.innerHTML = "<div class='feedback-title'>Revisión</div>Por favor completa los campos con objetivos como: Reducir tiempo, Evitar errores manuales, Ejecutar pruebas repetitivas, Agilizar feedback.";
+            }
+
+            // --- Q13 Evaluation ---
+            const q13 = document.querySelector('input[name="q13"]:checked');
+            const f13 = document.getElementById('feedback-13');
+            if (q13) {
+                if (q13.value === 'B') {
+                    score++;
+                    f13.className = "feedback correct";
+                    f13.innerHTML = "<div class='feedback-title'>¡Correcto!</div>El Ingeniero de Automatización (Automation Engineer) reúne tanto las habilidades de diseño de software como los patrones de arquitectura de testing idóneos.";
+                } else {
+                    f13.className = "feedback incorrect";
+                    f13.innerHTML = "<div class='feedback-title'>Incorrecto</div>Aunque los desarrolladores saben programar, carecen del enfoque de testing estructurado, y un QA tradicional puede no dominar el código necesario. El Ingeniero de Automatización es el rol especialista.";
+                }
+            } else {
+                f13.className = "feedback incorrect";
+                f13.innerHTML = "No respondiste esta pregunta.";
+            }
+
+            // --- Q14 Evaluation ---
+            const q14_inputs = [
+                document.getElementById('q14_1').value.toLowerCase(),
+                document.getElementById('q14_2').value.toLowerCase(),
+                document.getElementById('q14_3').value.toLowerCase()
+            ];
+            const f14 = document.getElementById('feedback-14');
+            const fw_keywords = ['data-driven', 'keyword-driven', 'hybrid', 'hibrido', 'linear', 'modular', 'bdd', 'pom', 'page object'];
+            let q14_match = 0;
+            q14_inputs.forEach(inp => {
+                if (fw_keywords.some(kw => inp.includes(kw))) q14_match++;
+            });
+
+            if (q14_match >= 2 || q14_inputs.every(i => i.trim().length > 3)) {
+                score++;
+                f14.className = "feedback correct";
+                f14.innerHTML = "<div class='feedback-title'>¡Correcto!</div>Frameworks válidos. Ejemplos comunes: Data-Driven, Keyword-Driven, BDD (Behavior Driven Development) o Arquitectura Modular.";
+            } else {
+                f14.className = "feedback incorrect";
+                f14.innerHTML = "<div class='feedback-title'>Revisión</div>Prueba introduciendo nombres clave como Data-Driven, Keyword-Driven, o Híbrido.";
+            }
+
+            // --- Q15 Evaluation ---
+            const f15 = document.getElementById('feedback-15');
+
+            // 1. Definimos la lista de respuestas válidas en minúsculas para facilitar la comparación
+            const opcionesValidas = [
+                "alcance",
+                "scope",
+                "mitigación de errores",
+                "Mitigación de errores",
+                "mitigación de errores", // Por si escribe con tilde
+                "recursos",
+                "criterios de entradas y salidas",
+                "criterios de entrada y salida",
+                "estrategias de prueba",
+                "entornos de prueba",
+                "entradas y salidas"
+            ];
+
+            let respuestasCorrectas = 0;
+            let respuestasIngresadas = [];
+
+            // 2. Recorremos los 6 inputs
+            for (let i = 1; i <= 6; i++) {
+                const input = document.getElementById(`q15_${i}`);
+                if (input) {
+                    // Limpiamos el texto: quitamos espacios extras y lo pasamos a minúsculas
+                    const valorLimpio = input.value.trim().toLowerCase();
+
+                    // Verificamos si el valor está en nuestra lista de opciones válidas
+                    // Y también chequeamos que el usuario no haya repetido la misma respuesta en otro campo
+                    if (opcionesValidas.includes(valorLimpio) && !respuestasIngresadas.includes(valorLimpio)) {
+                        respuestasCorrectas++;
+                        respuestasIngresadas.push(valorLimpio); // Guardamos para evitar duplicados válidos
+                    }
+                }
+            }
+
+            // 3. Evaluamos si completó al menos 4 correctas de las opciones válidas (o cambiá a 6 si querés que emboque todas)
+            if (respuestasCorrectas >= 4) {
+                score++;
+                f15.className = "feedback correct";
+                f15.innerHTML = `
+        <div class='feedback-title'>¡Correcto!</div>
+        Se guardaron y validaron tus elementos del plan de pruebas (Alcance/Scope, Estrategias de prueba, Criterios de entrada y salida, Recursos, Entornos de prueba, Mitigación de errores).
+    `;
+            } else {
+                f15.className = "feedback incorrect";
+                f15.innerHTML = `
+        <div class='feedback-title'>Incompleto o Incorrecto</div>
+        Asegúrate de ingresar al menos 4 de los componentes correctos de la estrategia de pruebas (Scope, Alcance, Mitigación de errores, Recursos, Criterios de entradas y salidas, Estrategias de prueba o Entornos de prueba).
+    `;
+            }
+
+            // --- Q16 Evaluation ---
+            const q16_1 = document.getElementById('q16_1').value.trim().toLowerCase(); // Cima (UI)
+            const q16_2 = document.getElementById('q16_2').value.trim().toLowerCase(); // Medio (Servicios)
+            const q16_3 = document.getElementById('q16_3').value.trim().toLowerCase(); // Base (Unitarias)
+            const f16 = document.getElementById('feedback-16');
+
+            // 1. Validar Cima: Debe contener UI o interfaz
+            const esCimaCorrecta = q16_1.includes('ui') || q16_1.includes('interfaz') || q16_1.includes('user interface');
+
+            // 2. Validar Medio: Debe contener servicios o api
+            const esMedioCorrecto = q16_2.includes('servicio') || q16_2.includes('api');
+
+            // 3. Validar Base: Debe contener unitaria o unit
+            const esBaseCorrecta = q16_3.includes('unitaria') || q16_3.includes('unit');
+
+            if (esCimaCorrecta && esMedioCorrecto && esBaseCorrecta) {
+                score++;
+                f16.className = "feedback correct";
+                f16.innerHTML = `
+        <div class='feedback-title'>¡Correcto!</div>
+        ¡Excelente! Estructuraste la pirámide a la perfección:
+        <br>• <strong>Cima:</strong> Pruebas de UI (Interfaz de Usuario)
+        <br>• <strong>Medio:</strong> Pruebas de Servicios / APIs
+        <br>• <strong>Base:</strong> Pruebas Unitarias
+    `;
+            } else {
+                f16.className = "feedback incorrect";
+                f16.innerHTML = `
+        <div class='feedback-title'>Orden Incorrecto o Incompleto</div>
+        Revisa el orden desde arriba hacia abajo. En la cima va la UI, en el medio la capa de Servicios/APIs, y en la base las pruebas Unitarias.
+    `;
+            }
+
+            // Display general results
+            const banner = document.getElementById('scoreBanner');
+            const scoreText = document.getElementById('scoreText');
+            banner.style.display = "block";
+            scoreText.innerText = `Puntaje: ${score} de ${totalQuestions} correctas`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+
+</html>
